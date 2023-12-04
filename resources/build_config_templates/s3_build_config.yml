@@ -1,0 +1,20 @@
+version: 0.2
+env:
+  parameter-store:
+    COMMITID: $SSM_PARAM_COMMITID
+    S3KEY: $SSM_PARAM_S3_KEY
+phases:
+  build:
+    commands:
+      - |
+        if [ "$COMMITID" = "init" ] &&  [ "$S3KEY" = "init" ]; then
+          echo "No zip, this must be the first execution of the pipeline after infrastructure deployment"
+        else
+          mkdir temp
+          aws s3 cp s3://$SRC_BUCKET_NAME/$S3KEY ./temp
+          cd temp && ls
+          unzip *.zip
+          rm *.zip
+          echo aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --cache-control 'max-age=60' --recursive #don't change this line
+          aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --cache-control 'max-age=60' --recursive #don't change this line  
+        fi

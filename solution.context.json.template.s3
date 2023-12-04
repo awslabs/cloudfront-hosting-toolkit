@@ -1,0 +1,4 @@
+{
+  "s3bucket": "test-bucket-source-build",
+  "s3path": "temp/"
+}

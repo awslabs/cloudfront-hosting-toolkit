@@ -1,0 +1,5 @@
+{
+    "repoUrl": "https://github.com/USERNAME/REPOSITORY.git",
+    "branchName": "main",
+    "framework": "nextjs"
+}
