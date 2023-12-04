@@ -221,7 +221,7 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
 
   ```typescript
   
-    import { Hosting } from 'cloudFront-gosting-toolkit';
+    import { Hosting } from 'cloudFront-hosting-toolkit';
 
     ...
 
