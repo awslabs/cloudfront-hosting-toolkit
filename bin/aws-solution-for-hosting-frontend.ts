@@ -67,6 +67,7 @@ const app = new App();
       connectionStackName,
       hostingConfiguration,
       {
+        description: 'Cloudfront Hosting Toolkit Repository Stack (uksb-1tupboc37)',
         env: {
           region: process.env.CDK_DEFAULT_REGION,
           account: process.env.CDK_DEFAULT_ACCOUNT,
@@ -85,6 +86,7 @@ const app = new App();
       certificateArn: certificateArn,
     },
     {
+      description: 'Cloudfront Hosting Toolkit Hosting Stack (uksb-1tupboc37)',
       env: {
         region: process.env.CDK_DEFAULT_REGION,
         account: process.env.CDK_DEFAULT_ACCOUNT,
