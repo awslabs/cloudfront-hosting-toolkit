@@ -1,4 +1,5 @@
-# CloudFront Hosting Toolkit - Self-managed Frontend Hosting on AWS
+# CloudFront Hosting Toolkit
+## Self-managed Frontend Hosting on AWS
 
 CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.
 

@@ -1,5 +1,5 @@
 {
-  "name": "cloudfront-hosting-toolkit",
+  "name": "@aws/cloudfront-hosting-toolkit",
   "version": "1.0.0",
   "description": "CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.",
   "bin": {
