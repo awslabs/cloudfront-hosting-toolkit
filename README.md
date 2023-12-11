@@ -85,7 +85,7 @@ Once Node.js is installed, run the following command to install CloudFront Hosti
 To download and install the CLI, run the following command:
 
 ```bash
-  npm install -g cloudfront-hosting-toolkit
+  npm install -g @aws/cloudfront-hosting-toolkit
 ```
 
 CloudFront Hosting Toolkit offers deployment flexibility: If you already have the repo cloned, follow the 1st option for automatic detection of GitHub repo details. Alternatively, you may follow the second option if you don't have it or prefer manual input.
