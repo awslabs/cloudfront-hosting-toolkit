@@ -88,7 +88,7 @@ export default async function checkAWSConnection() {
     await stsClient.send(getCallerIdentityCommand);
     return true;
   } catch (error) {
-    //console.log(error)
+    console.log(error)
     console.error(
       `${ERROR_PREFIX} Impossible to connect to your the AWS account. Try to authenticate and try again.`
     );

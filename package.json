@@ -1,6 +1,6 @@
 {
   "name": "@aws/cloudfront-hosting-toolkit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.",
   "bin": {
     "cloudfront-hosting-toolkit": "./bin/cli/index.js"
@@ -47,7 +47,6 @@
     "@aws-sdk/client-acm": "^3.410.0",
     "@aws-sdk/client-cloudfront": "^3.410.0",
     "@aws-sdk/client-codepipeline": "^3.410.0",
-    "@aws-sdk/client-codepipeline-node": "^0.1.0-preview.2",
     "@aws-sdk/client-codestar-connections": "^3.410.0",
     "@aws-sdk/client-route-53": "^3.410.0",
     "@aws-sdk/client-route-53-domains": "^3.410.0",
