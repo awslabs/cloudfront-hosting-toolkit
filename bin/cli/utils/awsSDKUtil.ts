@@ -31,11 +31,15 @@ import {
   DescribeCertificateCommand,
   RequestCertificateCommand,
   DeleteCertificateCommand,
+  RequestCertificateCommandInput
 } from "@aws-sdk/client-acm";
 import {
   Route53Client,
   ListResourceRecordSetsCommand,
   ChangeResourceRecordSetsCommand,
+  ChangeResourceRecordSetsCommandInput,
+  ListResourceRecordSetsCommandInput,
+  
 } from "@aws-sdk/client-route-53";
 
 import {
@@ -222,8 +226,7 @@ export async function createCFCNAME(
   cloudFrontDomainName: string,
   hostedZoneId: string
 ) {
-  const input = {
-    Comment: "Creating Alias resource record sets in Route 53",
+  const input: ChangeResourceRecordSetsCommandInput = {
     ChangeBatch: {
       Changes: [
         {
@@ -263,8 +266,7 @@ export async function deleteCFCNAME(
   cloudFrontDomainName: string,
   hostedZoneId: string
 ) {
-  const input = {
-    Comment: "Deleting Alias resource record sets in Route 53",
+  const input: ChangeResourceRecordSetsCommandInput = {
     ChangeBatch: {
       Changes: [
         {
@@ -303,7 +305,7 @@ export async function checkCFCNAMEExists(
   cloudFrontDomainName: string,
   hostedZoneId: string
 ) {
-  const input = {
+  const input: ListResourceRecordSetsCommandInput = {
     HostedZoneId: hostedZoneId,
     StartRecordName: domainName,
     StartRecordType: "A",
@@ -357,7 +359,7 @@ export const createACMCertificate = async (
 ): Promise<string> => {
   try {
     const domainNames = getDomainNames(domainName);
-    const input = {
+    const input: RequestCertificateCommandInput = {
       DomainName: domainNames[0],
       ValidationMethod: "DNS",
       SubjectAlternativeNames: [domainNames[1]],
@@ -508,7 +510,8 @@ async function checkCnameExists(
   cnameName: string,
   cnameValue: string
 ): Promise<boolean> {
-  const input = {
+  
+  const input: ListResourceRecordSetsCommandInput = {
     HostedZoneId: hostedZoneId,
     MaxItems: 1, // Change to number type
     StartRecordName: cnameName,
@@ -544,7 +547,8 @@ async function createCnameRecord(
   cnameName: string,
   cnameValue: string
 ): Promise<void> {
-  const input = {
+  
+  const input: ChangeResourceRecordSetsCommandInput = {
     ChangeBatch: {
       Changes: [
         {
