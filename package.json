@@ -1,9 +1,13 @@
 {
   "name": "@aws/cloudfront-hosting-toolkit",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.",
   "bin": {
     "cloudfront-hosting-toolkit": "./bin/cli/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/cloudfront-hosting-toolkit"
   },
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
