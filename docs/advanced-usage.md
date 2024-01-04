@@ -40,7 +40,7 @@ The CloudFront function uses three rules:
   - If a URL lacks a specific file,  append `.html`.
   - When a URL lacks both a file specification and a trailing slash, add `index.html`
 
-You can find additional details in the [source code](lambda/update_cff/cff.js) of the CloudFront Function.
+You can find additional details in the [source code](lambda/change_uri/index.js) of the CloudFront Function.
 
 If your website requires customization beyond the out-of-the-box configurations, you'll likely find yourself making modifications to either the CodeBuild spec YAML file or the CloudFront function code.
 

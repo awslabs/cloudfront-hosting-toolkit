@@ -14,7 +14,7 @@ resources/s3_trigger/dummy.zip
 resources/build_config/*.*
 *.tgz
 cloudfront-hosting-toolkit/*.*
-
+cloudfront-hosting-toolkit
 coverage
 
 .DS_Store

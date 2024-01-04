@@ -1,5 +1,9 @@
-// Configuration (Path to add)
-var pathToAdd = "";
+import cf from 'cloudfront';
+
+const kvsId = '__KVS_ID__';
+
+// This fails if the key value store is not associated with the function
+const kvsHandle = cf.kvs(kvsId);
 
 function pointsToFile(uri) {
   return /\/[^/]+\.[^/]+$/.test(uri);
@@ -11,7 +15,17 @@ var rulePatterns = {
 };
 
 // Function to determine rule and update the URI
-function updateURI(uri) {
+async function updateURI(uri) {
+
+  let pathToAdd = "";
+
+  try {
+    pathToAdd = await kvsHandle.get("path");
+  } catch (err) {
+      console.log(`No key 'path' present : ${err}`);
+      return uri;
+  }
+
   // Check for trailing slash and apply rule.
   if (uri.endsWith("/") && rulePatterns["/$"]) {
     return "/" + pathToAdd + uri.slice(0, -1) + rulePatterns["/$"];
@@ -30,21 +44,17 @@ function updateURI(uri) {
     }
   }
 
-  // Default return
   return "/" + pathToAdd + uri;
 }
 
 // Main CloudFront handler
-function handler(event) {
+async function handler(event) {
   var request = event.request;
   var uri = request.uri;
 
   console.log("BEFORE:" + request.uri);
-  if (pathToAdd) {
-    // Update the request URI using our rules
-  request.uri = updateURI(uri);
-
-  }
+  // Update the request URI using our rules
+  request.uri = await updateURI(uri);
   
   console.log("AFTER:" + request.uri);
 

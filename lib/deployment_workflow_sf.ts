@@ -34,15 +34,19 @@ import { IBucket } from "aws-cdk-lib/aws-s3";
 import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { SDKLayer } from "./layers/SDKLayer";
+
 
 interface IParamProps {
   changeUri: cloudfront.Function;
+  kvsArn: string,
   hostingBucket: IBucket;
   ssmCommitIdParam?: ssm.StringParameter;
   ssmS3KeyParam?: ssm.StringParameter;
 }
 
-export class UpdateCFFStepFunction extends Construct {
+export class DeploymentWorkflowStepFunction extends Construct {
   public readonly stepFunction: sfn.IStateMachine;
 
   constructor(scope: Construct, id: string, params: IParamProps) {
@@ -52,19 +56,24 @@ export class UpdateCFFStepFunction extends Construct {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
 
-    const updateCff = new lambda.Function(this, "UpdateCff", {
+    const updateKvs = new lambda.Function(this, "UpdateKvsFunction", {
       runtime: lambda.Runtime.NODEJS_18_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/update_cff")),
+      architecture: lambda.Architecture.ARM_64,
+      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/update_kvs")),
       timeout: Duration.seconds(300),
       handler: "index.handler",
+      layers: [
+        SDKLayer.arm64(this, 'SDKLayer')
+      ],
       environment: {
-        CFF_NAME: params.changeUri.functionName,
+        KVS_ARN: params.kvsArn,
       },
       logRetention: logs.RetentionDays.ONE_WEEK,
       role: basicLambdaRole,
     });
 
-    updateCff.addToRolePolicy(
+    
+    updateKvs.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: [
@@ -76,33 +85,32 @@ export class UpdateCFFStepFunction extends Construct {
       })
     );
 
-    updateCff.addToRolePolicy(
+    updateKvs.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: [
-          "cloudfront:DescribeFunction",
-          "cloudfront:UpdateFunction",
-          "cloudfront:PublishFunction",
+          "cloudfront-keyvaluestore:DescribeKeyValueStore",
+          "cloudfront-keyvaluestore:PutKey",
         ],
-        resources: [params.changeUri.functionArn],
+        resources: [params.kvsArn],
       })
     );
 
-    addCfnSuppressRules(updateCff, [
+    addCfnSuppressRules(updateKvs, [
       {
         id: "W58",
         reason:
           "Lambda has CloudWatch permissions by using service role AWSLambdaBasicExecutionRole",
       },
     ]);
-    addCfnSuppressRules(updateCff, [
+    addCfnSuppressRules(updateKvs, [
       {
         id: "W89",
         reason:
           "We don t have any VPC in the stack, we only use serverless services",
       },
     ]);
-    addCfnSuppressRules(updateCff, [
+    addCfnSuppressRules(updateKvs, [
       {
         id: "W92",
         reason:
@@ -181,7 +189,7 @@ export class UpdateCFFStepFunction extends Construct {
       this,
       "Update CloudFront Function",
       {
-        lambdaFunction: updateCff,
+        lambdaFunction: updateKvs,
         resultPath: JsonPath.DISCARD,
       }
     );
@@ -195,39 +203,10 @@ export class UpdateCFFStepFunction extends Construct {
       }
     );
 
-    const getCFFStatus = new tasks.CallAwsService(
-      this,
-      "Get CloudFront Function Status",
-      {
-        service: "cloudfront",
-        action: "describeFunction",
-        parameters: {
-          Name: params.changeUri.functionName,
-          Stage: "LIVE",
-        },
-        iamResources: [
-          `arn:aws:cloudfront::${Aws.ACCOUNT_ID}:function/${params.changeUri.functionName}`,
-        ],
-        iamAction: "cloudfront:describeFunction",
-      }
-    );
-
-    const wait = new sfn.Wait(this, "Wait 20 seconds", {
-      time: sfn.WaitTime.duration(Duration.seconds(20)),
-    });
-
     const end = new sfn.Succeed(this, "Done");
 
-    const updatePropagated = new sfn.Choice(this, "Status = DEPLOYED ?")
-      .when(
-        sfn.Condition.stringEquals("$.FunctionSummary.Status", "IN_PROGRESS"),
-        wait.next(getCFFStatus)
-      )
-      .otherwise(deleteOldDeploymentsJob.next(end));
-
     const communDefinition = updateCloudFrontFunctionJob
-      .next(getCFFStatus)
-      .next(updatePropagated);
+      .next(deleteOldDeploymentsJob.next(end));
 
     var stepFunctionDefinition: IChainable;
 

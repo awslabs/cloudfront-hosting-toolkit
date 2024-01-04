@@ -52,12 +52,13 @@ import { RetentionDays } from "aws-cdk-lib/aws-logs";
 import { BUILD_FILE_NAME, SSM_PIPELINENAME_STR } from "../bin/cli/shared/constants";
 import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
-import { UpdateCFFStepFunction } from "./update_cff_sf";
+import { DeploymentWorkflowStepFunction } from "./deployment_workflow_sf";
 import { HostingConfiguration } from "../bin/cli/shared/types";
 
 interface IConfigProps {
   hostingConfiguration: HostingConfiguration;
   connectionArn?: string;
+  kvsArn: string;
   hostingBucket: IBucket;
   changeUri: cloudfront.Function;
   buildFilePath: string
@@ -88,8 +89,9 @@ export class PipelineInfrastructure extends Construct {
       });
     }
 
-    const updateCFFStepFunction = new UpdateCFFStepFunction(this, "UpdateCFF", {
+    const deploymentWorkflowStepFunction = new DeploymentWorkflowStepFunction(this, "UpdateCFF", {
       changeUri: params.changeUri,
+      kvsArn: params.kvsArn,
       hostingBucket: params.hostingBucket,
       ssmCommitIdParam: ssmCommitIdParam,
       ssmS3KeyParam: ssmS3KeyParam,
@@ -327,7 +329,7 @@ export class PipelineInfrastructure extends Construct {
     const stepFunctionAction =
       new codepipeline_actions.StepFunctionInvokeAction({
         actionName: "Invoke",
-        stateMachine: updateCFFStepFunction.stepFunction,
+        stateMachine: deploymentWorkflowStepFunction.stepFunction,
         stateMachineInput:
           codepipeline_actions.StateMachineInput.literal(stepFunctionInput),
       });

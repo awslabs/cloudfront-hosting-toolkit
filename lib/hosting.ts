@@ -18,6 +18,7 @@ import {
   aws_cloudfront as cloudfront,
 } from "aws-cdk-lib";
 import * as path from "path";
+import * as fs from "fs";
 
 import { Construct } from "constructs";
 import { HostingInfrastructure } from "./hosting_infrastructure";
@@ -48,12 +49,21 @@ export class Hosting extends Construct {
   constructor(scope: Construct, id: string, params: IParamProps) {
     super(scope, id);
 
+    const uriStore = new cloudfront.KeyValueStore(this, 'UriStore');
+    let cloudFrontFunctionCode = fs.readFileSync(path.join(__dirname, "../lambda/change_uri/index.js"), 'utf-8');
+    cloudFrontFunctionCode = cloudFrontFunctionCode.replace(/__KVS_ID__/g, uriStore.keyValueStoreId);
+
     const changeUri = new cloudfront.Function(this, "ChangeUri", {
-      code: cloudfront.FunctionCode.fromFile({
-        filePath: path.join(__dirname, ".." ,"lambda/update_cff/cff.js")
-      }),
+      code: cloudfront.FunctionCode.fromInline(cloudFrontFunctionCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,          
       comment: "Change uri",
     });
+
+
+    (changeUri.node.defaultChild as cloudfront.CfnFunction).addPropertyOverride("FunctionConfig.KeyValueStoreAssociations",
+     [{ 
+      "KeyValueStoreARN": uriStore.keyValueStoreArn
+    }]);
 
     const hostingInfrastructure = new HostingInfrastructure(this, "HostingInfrastructure", {
       changeUri: changeUri,
@@ -64,6 +74,7 @@ export class Hosting extends Construct {
     new PipelineInfrastructure(this, "PipelineInfrastructure", {
       hostingConfiguration: params.hostingConfiguration,
       connectionArn: params.connectionArn,
+      kvsArn: uriStore.keyValueStoreArn,
       hostingBucket: hostingInfrastructure.hostingBucket,
       changeUri: changeUri,
       buildFilePath: params.buildFilePath,
