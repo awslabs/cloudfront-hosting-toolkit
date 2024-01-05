@@ -191,7 +191,7 @@ export class DeploymentWorkflowStepFunction extends Construct {
 
     const updateCloudFrontFunctionJob = new tasks.LambdaInvoke(
       this,
-      "Update CloudFront Function",
+      "Update KVS",
       {
         lambdaFunction: updateKvs,
         resultPath: JsonPath.DISCARD,
