@@ -191,7 +191,7 @@ export class DeploymentWorkflowStepFunction extends Construct {
 
     const updateCloudFrontFunctionJob = new tasks.LambdaInvoke(
       this,
-      "Update KVS",
+      "Update KeyValueStore",
       {
         lambdaFunction: updateKvs,
         resultPath: JsonPath.DISCARD,
@@ -200,17 +200,16 @@ export class DeploymentWorkflowStepFunction extends Construct {
 
     const deleteOldDeploymentsJob = new tasks.LambdaInvoke(
       this,
-      "Delete Old Deployments",
+      "Purge previous deployments from S3",
       {
         lambdaFunction: deleteOldDeployments,
         resultPath: JsonPath.DISCARD,
       }
     );
 
-    const end = new sfn.Succeed(this, "Done");
 
     const communDefinition = updateCloudFrontFunctionJob
-      .next(deleteOldDeploymentsJob.next(end));
+      .next(deleteOldDeploymentsJob);
 
     var stepFunctionDefinition: IChainable;
 

@@ -49,7 +49,10 @@ export class HostingInfrastructure extends Construct {
   constructor(scope: Construct, id: string, params: IConfigProps) {
     super(scope, id);
 
-    const s3Logs = new s3.Bucket(this, "LogsBucket", {
+    let s3Logs;
+    /*
+    //TODO add condition to activate logs
+    s3Logs = new s3.Bucket(this, "LogsBucket", {
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
@@ -68,10 +71,10 @@ export class HostingInfrastructure extends Construct {
         reason: "It is a log bucket, not need for a bucket policy.",
       },
     ]);
-
+    */
     const hostingBucket = new s3.Bucket(this, "HostingBucket", {
       versioned: false,
-      serverAccessLogsBucket: s3Logs,
+      ...(s3Logs ? { serverAccessLogsBucket: s3Logs } : {}),
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: new s3.BlockPublicAccess({
@@ -178,7 +181,10 @@ export class HostingInfrastructure extends Construct {
       },
     });
 
-    const cfLogs = new s3.Bucket(this, "CloudfrontLogsBucket", {
+    let cfLogs;
+    /*
+    //TODO add condition to activate logs
+    cfLogs = new s3.Bucket(this, "CloudfrontLogsBucket", {
       objectOwnership: s3.ObjectOwnership.OBJECT_WRITER,
       encryption: s3.BucketEncryption.S3_MANAGED,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
@@ -203,7 +209,7 @@ export class HostingInfrastructure extends Construct {
         id: "W51",
         reason: "It is a log bucket, not need for a bucket policy.",
       },
-    ]);
+    ]);*/
 
 
 
@@ -211,9 +217,9 @@ export class HostingInfrastructure extends Construct {
       comment: "Static hosting - " + Aws.STACK_NAME,
       defaultRootObject: "index.html",
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
-      enableLogging: true,
-      logBucket: cfLogs,
-      logFilePrefix: "distribution-access-logs/",
+      ...(cfLogs ? { enableLogging: true } : {}),
+      ...(cfLogs ? { logBucket: cfLogs } : {}),
+      ...(cfLogs ? { logFilePrefix: "distribution-access-logs/" } : {}),
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultBehavior: defaultBehavior,
       additionalBehaviors: {
