@@ -35,7 +35,6 @@ import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { SDKLayer } from "./layers/SDKLayer";
 
 
 interface IParamProps {
@@ -56,22 +55,27 @@ export class DeploymentWorkflowStepFunction extends Construct {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
 
-    const updateKvs = new lambda.Function(this, "UpdateKvsFunction", {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      architecture: lambda.Architecture.ARM_64,
-      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/update_kvs")),
-      timeout: Duration.seconds(300),
-      handler: "index.handler",
-      layers: [
-        SDKLayer.arm64(this, 'SDKLayer')
-      ],
-      environment: {
-        KVS_ARN: params.kvsArn,
-      },
-      logRetention: logs.RetentionDays.ONE_WEEK,
-      role: basicLambdaRole,
-    });
-
+    const updateKvs = new NodejsFunction(
+      this,
+      "UpdateKvsFunction",
+      {
+        entry: path.join(__dirname, "../lambda/update_kvs/index.js"),
+        memorySize: 512,
+        timeout: Duration.minutes(10),
+        runtime: lambda.Runtime.NODEJS_18_X,
+        architecture: lambda.Architecture.ARM_64,
+        logRetention: logs.RetentionDays.ONE_WEEK,
+        tracing: lambda.Tracing.ACTIVE,
+        environment: {
+          KVS_ARN: params.kvsArn,
+        },
+        role: basicLambdaRole,
+        bundling: {
+          minify: true,
+          externalModules: ['@aws-sdk/signature-v4-crt', '@aws-sdk/signature-v4-multi-region'],
+        },
+      }
+    );
     
     updateKvs.addToRolePolicy(
       new iam.PolicyStatement({
