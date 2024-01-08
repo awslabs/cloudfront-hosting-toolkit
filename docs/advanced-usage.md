@@ -4,9 +4,6 @@
 
 - [Build Configuration](#build-configuration)
 - [Custom Framework Configurations](#custom-framework-configurations)
-- [Integration Methods in CDK](#integration-methods-in-cdk)
-- [CDK Construct](#cdk-construct)
-- [Customizing AWS CDK Source Code](#customizing-aws-cdk-source-code)
 - [Initialize the Deployment Without Built-In Wizard](#initialize-a-deployment-without-built-in-wizard)
 
 
@@ -23,15 +20,15 @@ After running `cloudfront-hosting-toolkit init`, CloudFront Hosting Toolkit will
 
 Make sure to keep these files in the `cloudfront-hosting-toolkit` folder for seamless management of your futur deployments.
 
-
 ### Core Project Components: CodeBuild and CloudFront Functions
+
 
 Two essential components play vital roles in deploying and managing hosted websites:
 
 - **AWS CodeBuild**: CodeBuild serves as the engine responsible for building and deploying websites. It automates the entire process, from assembling files to pushing them to the hosting bucket. This automation streamlines the deployment pipeline, minimizing manual tasks and enabling swift updates.
 
 - **Amazon CloudFront Function**: The CloudFront function is actively deployed for every viewer request, offering two key functionalities:
-  - It directs users to the folder on S3 housing the current website version, ensuring a seamless user experience. During each new deployment, it dynamically switches to the latest folder, guaranteeing users always access the most up-to-date content. 
+  - Reads the key-value store to retrieve the folder name, directing users to the latest S3 folder and ensuring consistent access to the most up-to-date content.
   - URL rewriting, enabling efficient service for Single Page Applications (SPAs) and statically generated sites.
 
 The CloudFront function uses three rules:
@@ -40,7 +37,7 @@ The CloudFront function uses three rules:
   - If a URL lacks a specific file,  append `.html`.
   - When a URL lacks both a file specification and a trailing slash, add `index.html`
 
-You can find additional details in the [source code](lambda/change_uri/index.js) of the CloudFront Function.
+You can find additional details in the [source code](../lambda/change_uri/index.js) of the CloudFront Function.
 
 If your website requires customization beyond the out-of-the-box configurations, you'll likely find yourself making modifications to either the CodeBuild spec YAML file or the CloudFront function code.
 
@@ -87,7 +84,7 @@ If you're using a framework that isn't listed above, you can bring your own conf
 
 This way, you can seamlessly integrate your unique framework configuration into CloudFront Hosting Toolkit and deploy your website with ease.
 
-###   Initialize a deployment without built in wizard
+### Initialize a deployment without built in wizard
 
 Instructions for Deploying Based on Your Deployment Type:
 

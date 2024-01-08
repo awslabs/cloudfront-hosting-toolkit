@@ -4,7 +4,7 @@
 
 **Is it necessary to acquire a domain name in advance or before deploying my website?**
 
-  Yes, it's advisable to acquire your desired domain name before configuring it for your website. You have the flexibility to purchase the domain name either through your AWS account or from any other DNS provider of your choice. This ensures that you have ownership and control over the domain name as you proceed with the website configuration.
+  Yes, it's advisable to acquire your desired domain name before configuring it for your website if you want to associate a custom domain name with your website. You have the flexibility to purchase the domain name either through your AWS account or from any other DNS provider of your choice. This ensures that you have ownership and control over the domain name as you proceed with the website configuration.
 
 
 **I've successfully deployed my website using the tool, and now I'd like to configure a custom domain name. What are the steps I should follow?**

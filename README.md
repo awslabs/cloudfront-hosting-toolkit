@@ -56,7 +56,7 @@ GitHub Source Code Repository:
 
 2. Build stage: Within the pipeline's Build stage, known as the build step, a buildspec YAML is employed to construct the project. This build process may include tasks like compiling code, running tests, and creating deployment artifacts. After the build is complete, all the resulting source files are then transferred to a hosting S3 bucket, creating a new folder identified by the commit ID.
 
-3. ChangeUri stage: The third phase entails a Step Function responsible for orchestrating an update to the Cloudfront function. The primary role of the Cloudfront function is to reroute all incoming requests to the newly created folder. A monitoring loop is then initiated to track the propagation of changes made by the Cloudfront function throughout the system, ensuring seamless functionality and efficient deployment.
+3. Deploy stage: The third phase entails a Step Function responsible for updating the Key-Value Store by associating the commit ID with the corresponding folder name in the S3 storage. The primary role of the Cloudfront function is to reroute all incoming requests to the newly created folder.
 
 S3 Source Code Repository Configuration:
 
@@ -64,7 +64,7 @@ S3 Source Code Repository Configuration:
 
 2. Build stage: In the case of S3 source code repositories, there is no build involved. Instead, the ZIP file is copied directly from the source S3 bucket, unzipped, and its files are then copied to the hosting S3 bucket creating a new folder identified by the commit ID.
 
-3. ChangeUri stage: Similar to the GitHub scenario, a Step Function is responsible for coordinating an update to the Cloudfront function. The Cloudfront function's primary function is to redirect all incoming requests to the newly created folder. A loop is then initiated to monitor the propagation of changes made by the Cloudfront function throughout the system, ensuring smooth and timely updates.
+3. Deploy stage: Similar to the GitHub scenario, a Step Function is responsible for updating the Key-Value Store by associating the commit ID with the corresponding folder name in the S3 storage. The Cloudfront function's primary function is to redirect all incoming requests to the newly created folder. 
 
 Once the initial deployment is complete, you can simply focus on working on your website, as no other actions are required.
 
