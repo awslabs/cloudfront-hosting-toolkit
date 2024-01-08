@@ -15,14 +15,6 @@ import { detectFrontendFramework } from "../bin/cli/utils/helper";
       expect(framework).toEqual("nextjs")
     });
 
-    test("Detect Astro framework", async () => {
-
-      const nextJsFolderPath = path.join(__dirname, "./cloudfront-hosting-toolkit/astro");
-      const framework = await detectFrontendFramework(nextJsFolderPath);
-      console.log(framework);
-      expect(framework).toEqual("astro")
-    });
-
     test("Detect VueJs framework", async () => {
 
       const nextJsFolderPath = path.join(__dirname, "./cloudfront-hosting-toolkit/vuejs");

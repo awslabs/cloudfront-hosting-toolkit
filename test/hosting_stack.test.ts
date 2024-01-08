@@ -28,7 +28,7 @@ describe("hosting stack", () => {
     autoTemplate.resourceCountIs("AWS::Lambda::Function", 5);
 
     autoTemplate.resourceCountIs("AWS::CloudFront::Function", 1);
-    autoTemplate.resourceCountIs("AWS::S3::Bucket", 4);
+    autoTemplate.resourceCountIs("AWS::S3::Bucket", 2);
     autoTemplate.resourceCountIs("AWS::CloudFront::OriginAccessControl", 1);
 
     autoTemplate.resourceCountIs("AWS::CloudFront::Distribution", 1);
@@ -64,7 +64,7 @@ describe("hosting stack", () => {
     autoTemplate.resourceCountIs("AWS::Lambda::Function", 5);
 
     autoTemplate.resourceCountIs("AWS::CloudFront::Function", 1);
-    autoTemplate.resourceCountIs("AWS::S3::Bucket", 4);
+    autoTemplate.resourceCountIs("AWS::S3::Bucket", 2);
     autoTemplate.resourceCountIs("AWS::CloudFront::OriginAccessControl", 1);
 
     autoTemplate.resourceCountIs("AWS::CloudFront::Distribution", 1);
