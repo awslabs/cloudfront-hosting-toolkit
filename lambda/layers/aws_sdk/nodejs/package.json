@@ -1,0 +1,17 @@
+{
+    "name": "AWS_SDK_Layer",
+    "version": "1.0.0",
+    "description": "Latest AWS SDK libs",
+    "main": "",
+    "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+      "@aws-sdk/client-cloudfront-keyvaluestore": "^3.484.0"
+    },
+    "author": {
+      "name": "Amazon Web Services",
+      "url": "https://aws.amazon.com/solutions"
+    },
+    "license": "Apache-2.0"
+  }

@@ -48,6 +48,8 @@ With the command-line interface (CLI), you can interact with the AWS platform, s
 
 ![Technical diagram](img/architecture.jpg)
 
+Whenever new code changes are pushed to the corresponding GitHub repository (or alternatively a ZIP file to an S3 bucket in the S3 based workflow), the project automatically triggers an AWS CodePipeline. In the build step, tasks including code compilation and creating deployment artifacts are executed according to the detected web framework in the initialization step of the CLI. The output deployment artifacts are then uploaded to hosting S3 bucket, under a new folder identified by the commit ID. In the deploy step, a Step Function orchestrates an update to the KeyValueStore to instruct the CloudFront Function to route traffic to the newly created folder while bypassing the cached content of the previous frontend version. 
+
 In both cases—whether you're working with a GitHub source code repository or an S3 source code repository—the process of managing your project's code and deployment follows a similar pattern with some distinctions:
 
 GitHub Source Code Repository:

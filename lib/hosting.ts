@@ -57,13 +57,16 @@ export class Hosting extends Construct {
       code: cloudfront.FunctionCode.fromInline(cloudFrontFunctionCode),
       runtime: cloudfront.FunctionRuntime.JS_2_0,          
       comment: "Change uri",
+      
     });
 
 
+      
     (changeUri.node.defaultChild as cloudfront.CfnFunction).addPropertyOverride("FunctionConfig.KeyValueStoreAssociations",
      [{ 
       "KeyValueStoreARN": uriStore.keyValueStoreArn
     }]);
+    
 
     const hostingInfrastructure = new HostingInfrastructure(this, "HostingInfrastructure", {
       changeUri: changeUri,

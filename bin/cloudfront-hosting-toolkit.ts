@@ -67,7 +67,7 @@ const app = new App();
       connectionStackName,
       hostingConfiguration,
       {
-        description: 'Cloudfront Hosting Toolkit Repository Stack (uksb-1tupboc37)',
+        description: 'Cloudfront Hosting Toolkit Repository Stack',
         env: {
           region: process.env.CDK_DEFAULT_REGION,
           account: process.env.CDK_DEFAULT_ACCOUNT,

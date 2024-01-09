@@ -34,7 +34,6 @@ import { IBucket } from "aws-cdk-lib/aws-s3";
 import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 
 
 interface IParamProps {
@@ -55,28 +54,28 @@ export class DeploymentWorkflowStepFunction extends Construct {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
 
-    const updateKvs = new NodejsFunction(
-      this,
-      "UpdateKvsFunction",
-      {
-        entry: path.join(__dirname, "../lambda/update_kvs/index.js"),
-        memorySize: 512,
-        timeout: Duration.minutes(10),
-        runtime: lambda.Runtime.NODEJS_18_X,
-        architecture: lambda.Architecture.ARM_64,
-        logRetention: logs.RetentionDays.ONE_WEEK,
+    const awsSdkLayer = new lambda.LayerVersion(this, "AwsSdkLayer", {
+      compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
+      code: lambda.Code.fromAsset("lambda/layers/aws_sdk"),
+      description: "AWS SDK lib including client-cloudfront-keyvaluestore",
+    });
+
+    
+    const updateKvs = new lambda.Function(this, "UpdateKvsFunction", {
+      runtime: lambda.Runtime.NODEJS_18_X,
+      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/update_kvs")),
+      handler: "index.handler",
+      memorySize: 512,
+      timeout: Duration.minutes(10),
+      logRetention: logs.RetentionDays.ONE_WEEK,
         tracing: lambda.Tracing.ACTIVE,
+        layers: [awsSdkLayer],
         environment: {
           KVS_ARN: params.kvsArn,
         },
         role: basicLambdaRole,
-        bundling: {
-          minify: true,
-          externalModules: ['@aws-sdk/signature-v4-crt', '@aws-sdk/signature-v4-multi-region'],
-        },
-      }
-    );
-    
+    });
+
     updateKvs.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,

@@ -63,10 +63,13 @@ interface Command {
 
 export async function createZipArchive() {
   const outputFile = getBuildConfigS3Folder() + "/dummy.zip";
-
+  console.log("*** HERE *** " + outputFile);
   // Check if the zip file already exists
   if (fs.existsSync(outputFile)) {
+    console.log("does not exists...")
     return;
+  }else{
+    console.log("Exists...")
   }
 
   const zip = new AdmZip();
@@ -78,8 +81,6 @@ export async function createZipArchive() {
 
 export default async function handleDeployCommand() {
   await checkAWSConnection();
-  await createZipArchive();
-
 
   const configFile = process.cwd() + "/" + TOOL_NAME + "/" + CONFIG_FILE_NAME;
   const buildFile = process.cwd() + "/" + TOOL_NAME + "/" + BUILD_FILE_NAME;
@@ -96,6 +97,10 @@ export default async function handleDeployCommand() {
 
   var counter = 1;
   const hostingConfiguration = await loadHostingConfiguration();
+
+  if (isS3Config(hostingConfiguration)) {
+    await createZipArchive();
+  }
 
   var certificateArnCmdParam = "";
   if (hostingConfiguration.domainName) {
