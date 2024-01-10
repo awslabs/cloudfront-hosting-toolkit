@@ -19,57 +19,62 @@ const s3 = new S3();
 const bucketName = process.env.BUCKET_NAME; // Use the environment variable
 
 exports.handler = async (event, context) => {
-    try {
-        const listObjectsParams = {
-            Bucket: bucketName,
-            Delimiter: '/'
+  console.log("event=" + JSON.stringify(event));
+
+  try {
+    const commitId = event.commitId;
+
+    const listObjectsParams = {
+      Bucket: bucketName,
+      Delimiter: "/",
+    };
+
+    const listResponse = await s3.listObjectsV2(listObjectsParams);
+
+    const folderObjects = listResponse.CommonPrefixes.map((prefix) => ({
+      Prefix: prefix.Prefix,
+    }));
+
+    const objectsToDelete = folderObjects.filter((object) => {
+      const folderPath = object.Prefix;
+      const folderName = folderPath.slice(0, -1); // Remove trailing slash
+
+      return (
+        !folderName.startsWith(commitId)
+      );
+    });
+
+    if (objectsToDelete.length === 0) {
+      console.log("No files or folders to delete.");
+    } else {
+      let deletedItemCount = 0;
+
+      for (const object of objectsToDelete) {
+        const deleteFilesParams = {
+          Bucket: bucketName,
+          Prefix: object.Prefix,
         };
 
-        const listResponse = await s3.listObjectsV2(listObjectsParams);
-        const folderObjects = listResponse.CommonPrefixes.map(prefix => ({ Prefix: prefix.Prefix }));
-        
-        // Sort the folder objects based on LastModified in descending order
-        folderObjects.sort((a, b) => b.LastModified - a.LastModified);
+        const files = await s3.listObjectsV2(deleteFilesParams);
 
-        const foldersToKeep = folderObjects.slice(-2);
+        for (const file of files.Contents) {
+          const deleteFileParams = {
+            Bucket: bucketName,
+            Key: file.Key,
+          };
 
-        let deletedItemCount = 0;
-
-        for (const folder of folderObjects) {
-            if (!foldersToKeep.some(keepFolder => keepFolder.Prefix === folder.Prefix)) {
-                const listFilesParams = {
-                    Bucket: bucketName,
-                    Prefix: folder.Prefix
-                };
-
-                const files = await s3.listObjectsV2(listFilesParams);
-
-                if (files.Contents.length === 0) {
-                    console.log(`No files to delete in folder: ${folder.Prefix}`);
-                    continue;
-                }
-                
-                for (const file of files.Contents) {
-                    const deleteFileParams = {
-                        Bucket: bucketName,
-                        Key: file.Key
-                    };
-
-                    await s3.deleteObject(deleteFileParams);
-                    console.log(`Deleted file: ${file.Key}`);
-                    deletedItemCount++;
-                }
-            }
+          await s3.deleteObject(deleteFileParams);
+          console.log(`Deleted file: ${file.Key}`);
+          deletedItemCount++;
         }
-        if (deletedItemCount === 0) {
-            console.log('No files or folders to delete.');
-        }else{
-            console.log('Old files and folders deleted successfully.');
-        }
-        
-        return 'Execution completed successfully';
-    } catch (error) {
-        console.error('Error:', error);
-        throw new Error(`Error deleting old files and folders: ${error.message}`);
+      }
+
+      console.log(`Deleted ${deletedItemCount} objects successfully.`);
     }
+
+    return "Execution completed successfully";
+  } catch (error) {
+    console.error("Error:", error);
+    throw new Error(`Error deleting old files and folders: ${error.message}`);
+  }
 };
