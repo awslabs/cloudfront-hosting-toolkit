@@ -22,7 +22,7 @@ CloudFront Hosting Toolkit provides flexibility in how it can be used:
 
 - **Self-paced wizard for easy setup**: Our self-paced setup wizard guides you through the installation process step by step, making it effortless to get started with our project.
 
-- **Instant deployment for quick results**: Experience rapid deployment of your project changes, reducing waiting times and accelerating your development cycle.
+- **Instant deployment for quick results**: Experience rapid deployment of your project changes, reducing waiting times and accelerating your development cycle. The solution automatically clears the cache of the previous version.
 
 - **Seamless GitHub integration for version control**: Integrate your project seamlessly with GitHub, enabling efficient version control and collaboration with your team.
 
