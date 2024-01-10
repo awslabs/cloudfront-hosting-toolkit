@@ -112,7 +112,9 @@ export class HostingInfrastructure extends Construct {
             override: true,
           },
           xssProtection: { protection: true, modeBlock: true, override: true },
+          
         },
+        removeHeaders: ['age' , 'date'],
       }
     );
 

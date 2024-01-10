@@ -15,6 +15,6 @@ phases:
           cd temp && ls
           unzip *.zip
           rm *.zip
-          echo aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --cache-control 'max-age=60' --recursive #don't change this line
-          aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --cache-control 'max-age=60' --recursive #don't change this line  
+          echo aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --recursive #don't change this line
+          aws s3 cp ./ s3://$DEST_BUCKET_NAME/$COMMITID/ --recursive #don't change this line  
         fi

@@ -3,8 +3,8 @@ version: 0.2
 phases:
   build:
     commands:
-      - echo aws s3 cp ./ s3://$DEST_BUCKET_NAME/$CODEBUILD_RESOLVED_SOURCE_VERSION/ --cache-control 'max-age=60' --recursive #don't change this line
-      - aws s3 cp ./ s3://$DEST_BUCKET_NAME/$CODEBUILD_RESOLVED_SOURCE_VERSION/ --cache-control 'max-age=60' --recursive #don't change this line
+      - echo aws s3 cp ./ s3://$DEST_BUCKET_NAME/$CODEBUILD_RESOLVED_SOURCE_VERSION/ --recursive #don't change this line
+      - aws s3 cp ./ s3://$DEST_BUCKET_NAME/$CODEBUILD_RESOLVED_SOURCE_VERSION/ --recursive #don't change this line
 
 
 
