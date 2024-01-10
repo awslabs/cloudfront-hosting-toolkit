@@ -1,33 +1,21 @@
 # CloudFront Hosting Toolkit
+
+CloudFront Hosting Toolkit, an open source command line tool to help developers deploy fast and secure frontends in the cloud. 
+
 ## Self-managed Frontend Hosting on AWS
 
 CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.
 
+
+Effortlessly deploy and manage your frontend with the CloudFront Hosting Toolkit CLI. A quick installation, two commands, and the CLI automatically establishes a deployment pipeline and infrastructure, ensuring seamless updates after each Git push. Maintain full control over your cloud resources for flexibility, enabling modifications at any time. This eliminates the need for time-consuming setup, empowering you to swiftly customize and deploy well-architected frontends within your existing Git workflow.
+
+The CLI simplifies AWS platform interaction for deploying static websites. It walks you through configuring a new repository, executing the deployment process, and provides the domain name upon completion. By following these steps, you effortlessly link your GitHub repository and deploy the necessary infrastructure, simplifying the deployment process. This enables you to focus on developing website content without dealing with the intricacies of infrastructure management.
+
 CloudFront Hosting Toolkit provides flexibility in how it can be used:
 
 - **CLI**: Use the Command-Line Interface (CLI) for a straightforward, step-by-step deployment process.
-- **CDK**
-  - **CDK Construct**: Leverage the CloudFront Hosting Toolkit, a ready-made L3 CDK construct, for seamless integration into your AWS projects.
-  - **CDK source code**: Adjust the CDK source code to tailor the infrastructure according to your requirements.
-
-
-With the command-line interface (CLI), you can interact with the AWS platform, simplifying the process of deploying a static website on AWS. The CLI guides users step-by-step from the configuration of a new repository to be deployed until the execution ends and displays the domain name where the website is available. By following the instructions provided by the CLI, users can easily specify their Github repository and deploy the required infrastructure with minimal effort. This streamlines the deployment process, allowing users to focus on developing their website content without worrying about the intricacies of infrastructure management.
-
-
-
-## Table of Contents
-
-- [Features](#features)
-- [Architecture](#architecture)
-- [Getting Started with the CLI](#getting-started-with-the-cli)
-- [Getting Started with CDK](#getting-started-with-cdk)
-- [Advanced Usage](#advanced-usage)
-- [Troubleshooting](#troubleshooting-guide)
-- [Roadmap](#roadmap)
-- [Requirements](#requirements)
-- [FAQ](#faq)
-- [Contributing Guidelines](#Contribute)
-- [License](#license)
+- **CDK Construct**: Leverage the CloudFront Hosting Toolkit, a ready-made L3 CDK construct, for seamless integration into your AWS projects.
+- **CDK source code**: Adjust the CDK source code to tailor the infrastructure according to your requirements.
 
 ## Features
 
@@ -44,13 +32,31 @@ With the command-line interface (CLI), you can interact with the AWS platform, s
 
 - **Custom domain name support with TLS certificate**: Easily configure custom domain names for your project and secure them with TLS certificates, ensuring a professional and secure online presence.
 
+
+
+
+## Table of Contents
+
+- [Architecture](#architecture)
+- [Getting Started with the CLI](#getting-started-with-the-cli)
+- [Getting Started with CDK](#getting-started-with-cdk)
+- [Advanced Usage](#advanced-usage)
+- [Troubleshooting](#troubleshooting-guide)
+- [Roadmap](#roadmap)
+- [Requirements](#requirements)
+- [FAQ](#faq)
+- [Contributing Guidelines](#Contribute)
+- [License](#license)
+
+
+
 ## Architecture
 
 ![Technical diagram](img/architecture.jpg)
 
 Whenever new code changes are pushed to the corresponding GitHub repository (or alternatively a ZIP file to an S3 bucket in the S3 based workflow), the project automatically triggers an AWS CodePipeline. In the build step, tasks including code compilation and creating deployment artifacts are executed according to the detected web framework in the initialization step of the CLI. The output deployment artifacts are then uploaded to hosting S3 bucket, under a new folder identified by the commit ID. In the deploy step, a Step Function orchestrates an update to the KeyValueStore to instruct the CloudFront Function to route traffic to the newly created folder while bypassing the cached content of the previous frontend version. 
 
-In both cases—whether you're working with a GitHub source code repository or an S3 source code repository—the process of managing your project's code and deployment follows a similar pattern with some distinctions:
+Whether you're working with a GitHub source code repository or an S3 source code repository—the process of managing your project's code and deployment follows a similar pattern with some distinctions:
 
 GitHub Source Code Repository:
 
