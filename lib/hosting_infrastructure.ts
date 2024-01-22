@@ -43,8 +43,20 @@ interface IConfigProps {
   hostingConfiguration: HostingConfiguration;
 }
 
+function truncateOACString(inputString: string, maxLength: number): string {
+  if (inputString.length <= maxLength) {
+      // No need to truncate, the string is already within the specified length
+      return inputString;
+  } else {
+      // Truncate the string and append ellipsis (...) to indicate truncation
+      return inputString.substring(0, maxLength) + '...';
+  }
+}
+
 export class HostingInfrastructure extends Construct {
   public readonly hostingBucket: IBucket;
+
+
 
   constructor(scope: Construct, id: string, params: IConfigProps) {
     super(scope, id);
@@ -174,9 +186,10 @@ export class HostingInfrastructure extends Construct {
       ],
     };
 
+    console.log("***** AOC="+"AOC-Hosting-" + Aws.STACK_NAME + "-" + Aws.REGION)
     const oac = new cloudfront.CfnOriginAccessControl(this, "OAC", {
       originAccessControlConfig: {
-        name: "AOC-Hosting-" + Aws.STACK_NAME + "-" + Aws.REGION,
+        name: truncateOACString(Aws.STACK_NAME + "-" + Aws.REGION, 65),
         originAccessControlOriginType: "s3",
         signingBehavior: "always",
         signingProtocol: "sigv4",
