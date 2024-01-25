@@ -3,6 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
+      - n install 18.17.0
       - npx npm install
       - npx next build
       - npx next export   

@@ -77,6 +77,10 @@ import {
 
 const util = require("util");
 
+import {loadConfig} from "@aws-sdk/node-config-provider";
+import {NODE_REGION_CONFIG_FILE_OPTIONS, NODE_REGION_CONFIG_OPTIONS} from "@aws-sdk/config-resolver";
+
+
 /**
  * Checks the connection to the AWS account using AWS STS (Security Token Service).
  * Returns true if the connection is successful, otherwise displays an error and exits.
@@ -86,6 +90,9 @@ export default async function checkAWSConnection() {
   const getCallerIdentityCommand = new GetCallerIdentityCommand({});
   try {
     await stsClient.send(getCallerIdentityCommand);
+    const currentRegion = await loadConfig(NODE_REGION_CONFIG_OPTIONS, NODE_REGION_CONFIG_FILE_OPTIONS)();
+    console.log("currentRegion:"+currentRegion)
+
     return true;
   } catch (error) {
     console.log(error)
@@ -625,6 +632,7 @@ export async function getSSMParameter(parameterName: string) {
     const hostingConfiguration = await loadHostingConfiguration();
 
     let stackName;
+    
     if (
       (parameterName === SSM_CONNECTION_ARN_STR ||
         parameterName === SSM_CONNECTION_NAME_STR ||
@@ -638,9 +646,10 @@ export async function getSSMParameter(parameterName: string) {
     } else {
       stackName = calculateMainStackName(hostingConfiguration);
     }
-
+    
+    const ssmParam = "/" + stackName + "/" + parameterName;
     const command = new GetParameterCommand({
-      Name: "/" + stackName + "/" + parameterName,
+      Name: ssmParam,
     });
 
     // Execute the command and retrieve the parameter value
@@ -649,7 +658,8 @@ export async function getSSMParameter(parameterName: string) {
 
     return paramValue;
   } catch (err) {
-    console.error("Error retrieving parameter:", err);
+    
+    console.error(`Error retrieving parameter ${parameterName}`, err);
     throw err;
   }
 }

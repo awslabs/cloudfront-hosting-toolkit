@@ -4,14 +4,16 @@
     "description": "Latest AWS SDK libs",
     "main": "",
     "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
-      "@aws-sdk/client-cloudfront-keyvaluestore": "^3.484.0"
+        "@aws-sdk/client-cloudfront-keyvaluestore": "^3.484.0",
+        "@aws-sdk/signature-v4-crt": "^3.484.0",
+        "@aws-sdk/signature-v4-multi-region": "^3.484.0"
     },
     "author": {
-      "name": "Amazon Web Services",
-      "url": "https://aws.amazon.com/solutions"
+        "name": "Amazon Web Services",
+        "url": "https://aws.amazon.com/solutions"
     },
     "license": "Apache-2.0"
-  }
+}
