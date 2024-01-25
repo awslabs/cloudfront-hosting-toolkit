@@ -36,6 +36,7 @@ import { calculateMainStackName, getDomainNames } from "../bin/cli/utils/helper"
 import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { HostingConfiguration } from "../bin/cli/shared/types";
 import { SSM_DOMAIN_STR } from "../bin/cli/shared/constants";
+import { truncateString } from "./utility";
 
 interface IConfigProps {
   changeUri: cloudfront.Function;
@@ -43,15 +44,7 @@ interface IConfigProps {
   hostingConfiguration: HostingConfiguration;
 }
 
-function truncateOACString(inputString: string, maxLength: number): string {
-  if (inputString.length <= maxLength) {
-      // No need to truncate, the string is already within the specified length
-      return inputString;
-  } else {
-      // Truncate the string and append ellipsis (...) to indicate truncation
-      return inputString.substring(0, maxLength) + '...';
-  }
-}
+
 
 export class HostingInfrastructure extends Construct {
   public readonly hostingBucket: IBucket;
@@ -186,10 +179,9 @@ export class HostingInfrastructure extends Construct {
       ],
     };
 
-    console.log("***** AOC="+"AOC-Hosting-" + Aws.STACK_NAME + "-" + Aws.REGION)
     const oac = new cloudfront.CfnOriginAccessControl(this, "OAC", {
       originAccessControlConfig: {
-        name: truncateOACString(Aws.STACK_NAME + "-" + Aws.REGION, 65),
+        name: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65),
         originAccessControlOriginType: "s3",
         signingBehavior: "always",
         signingProtocol: "sigv4",

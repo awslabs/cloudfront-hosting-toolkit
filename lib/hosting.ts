@@ -15,6 +15,7 @@
  */
 
 import {
+  Aws,
   aws_cloudfront as cloudfront,
 } from "aws-cdk-lib";
 import * as path from "path";
@@ -24,6 +25,7 @@ import { Construct } from "constructs";
 import { HostingInfrastructure } from "./hosting_infrastructure";
 import { PipelineInfrastructure } from "./pipeline_infrastructure";
 import { HostingConfiguration } from "../bin/cli/shared/types";
+import { truncateString } from "./utility";
 interface IParamProps {
   hostingConfiguration: HostingConfiguration;
   buildFilePath: string;
@@ -49,8 +51,12 @@ export class Hosting extends Construct {
   constructor(scope: Construct, id: string, params: IParamProps) {
     super(scope, id);
 
-    const uriStore = new cloudfront.KeyValueStore(this, 'UriStore');
+    const uriStore = new cloudfront.KeyValueStore(this, 'UriStore', {
+      keyValueStoreName: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65)
+    });
+
     let cloudFrontFunctionCode = fs.readFileSync(path.join(__dirname, "../lambda/change_uri/index.js"), 'utf-8');
+
     cloudFrontFunctionCode = cloudFrontFunctionCode.replace(/__KVS_ID__/g, uriStore.keyValueStoreId);
 
     const changeUri = new cloudfront.Function(this, "ChangeUri", {
@@ -60,8 +66,7 @@ export class Hosting extends Construct {
       
     });
 
-
-      
+    
     (changeUri.node.defaultChild as cloudfront.CfnFunction).addPropertyOverride("FunctionConfig.KeyValueStoreAssociations",
      [{ 
       "KeyValueStoreARN": uriStore.keyValueStoreArn
