@@ -40,6 +40,8 @@ import {
   getGitBranch,
   doesHostingConfigurationFileExist,
   detectFrontendFramework,
+  getCffTemplatesFolder,
+  getCffConfigFilePath,
 } from "../utils/helper";
 import { CONFIG_FILE_NAME, TOOL_NAME } from "../shared/constants";
 import { HostingConfiguration } from "../shared/types";
@@ -136,6 +138,8 @@ export async function init_repository() {
   console.log("\n--");
 
   copyBuildConfigIfNotExists("hosting_" + frameworkName + ".yml");
+  copyCffIfNotExists("index_" + frameworkName + ".js")
+
 
   const newHostingConfiguration: HostingConfiguration = {
     repoUrl: repositoryUrl,
@@ -162,6 +166,9 @@ export function saveAndLogConfiguration(
   console.log(`>       Configuration file generated ${getConfigFilePath()}`);
   console.log(
     `>       Build configuration generated ${getBuildConfigFilePath()}`
+  );
+  console.log(
+    `>       CloudFront Function source code generated ${getCffConfigFilePath()}`
   );
 
   console.log(
@@ -211,6 +218,7 @@ export async function init_s3() {
   console.log("\n--");
 
   copyBuildConfigIfNotExists("s3_build_config.yml");
+  copyCffIfNotExists("index_basic.js")
 
   const newHostingConfiguration: HostingConfiguration = {
     s3bucket: s3questions.s3bucket,
@@ -237,6 +245,20 @@ export function copyBuildConfigIfNotExists(fileName: string): void {
 
   if (!fs.existsSync(getBuildConfigFilePath())) {
     fs.copyFileSync(srcBuildConfigFile, getBuildConfigFilePath());
+  }
+}
+
+export function copyCffIfNotExists(fileName: string): void {
+
+  const srcBuildConfigFile: string =
+    getCffTemplatesFolder() + "/" + fileName;
+
+  if (!fs.existsSync(getToolFolder())) {
+    fs.mkdirSync(getToolFolder());
+  }
+
+  if (!fs.existsSync(getCffConfigFilePath())) {
+    fs.copyFileSync(srcBuildConfigFile, getCffConfigFilePath());
   }
 }
 

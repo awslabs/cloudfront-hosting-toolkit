@@ -386,7 +386,6 @@ export class PipelineInfrastructure extends Construct {
       "utf8"
     );
     const buildSpecYaml = yaml.parse(buildSpecObj);
-
     const codeBuildLogs = new logs.LogGroup(this, `MyLogGroup`, {
       retention: RetentionDays.ONE_WEEK,
     });

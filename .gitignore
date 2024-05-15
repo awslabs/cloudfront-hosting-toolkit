@@ -9,7 +9,6 @@ bin/*.js
 .cdk.staging
 cdk.out
 solution.context.json
-package-lock.json
 resources/s3_trigger/dummy.zip
 resources/build_config/*.*
 *.tgz
@@ -26,3 +25,12 @@ lib/**/*.js
 
 bin/**/*.d.ts
 bin/**/*.js
+
+lambda/delete_old_deployments/*.d.ts
+lambda/delete_old_deployments/*.js
+
+lambda/new_build/*.d.ts
+lambda/new_build/*.js
+
+lambda/update_kvs/*.d.ts
+lambda/update_kvs/*.js

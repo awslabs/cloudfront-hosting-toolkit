@@ -12,5 +12,7 @@
 !resources/**/*/*.*
 
 !package.json
+!package-lock.json
+
 !cdk.json
 

@@ -29,6 +29,7 @@ import { truncateString } from "./utility";
 interface IParamProps {
   hostingConfiguration: HostingConfiguration;
   buildFilePath: string;
+  cffSourceFilePath: string;
   connectionArn?: string ;
   certificateArn?: string;
 }
@@ -55,7 +56,8 @@ export class Hosting extends Construct {
       keyValueStoreName: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65)
     });
 
-    let cloudFrontFunctionCode = fs.readFileSync(path.join(__dirname, "../lambda/change_uri/index.js"), 'utf-8');
+    
+    let cloudFrontFunctionCode = fs.readFileSync(params.cffSourceFilePath, 'utf-8');
 
     cloudFrontFunctionCode = cloudFrontFunctionCode.replace(/__KVS_ID__/g, uriStore.keyValueStoreId);
 

@@ -32,6 +32,7 @@ import {
 } from "../shared/types";
 import {
   BUILD_FILE_NAME,
+  CFF_FILE_NAME,
   CONFIG_FILE_NAME,
   CONNECTION_STACK_NAME,
   DOMAIN_NAME_REGEX,
@@ -73,6 +74,10 @@ export function getBuildConfigFilePath() {
   return path.join(getCLIExecutionFolder(), TOOL_NAME) + "/" + BUILD_FILE_NAME;
 }
 
+export function getCffConfigFilePath() {
+  return path.join(getCLIExecutionFolder(), TOOL_NAME) + "/" + CFF_FILE_NAME;
+}
+
 /**
  * Retrieves the file path of the configuration file used for the deployment of the hosting infrastructure.
  * The function combines the current working directory path and the relevant file names to construct the path.
@@ -97,6 +102,14 @@ export function getBuildConfigTemplatesFolder() {
     getCLIInstallationFolder(),
     "resources",
     "build_config_templates"
+  );
+}
+
+export function getCffTemplatesFolder() {
+  return path.join(
+    getCLIInstallationFolder(),
+    "resources",
+    "cff_templates"
   );
 }
 

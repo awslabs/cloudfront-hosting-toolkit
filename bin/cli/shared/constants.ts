@@ -21,6 +21,8 @@ import * as Joi from "joi";
 export const TOOL_NAME = "cloudfront-hosting-toolkit";
 export const CONFIG_FILE_NAME = TOOL_NAME + "-config.json";
 export const BUILD_FILE_NAME = TOOL_NAME + "-build.yml";
+export const CFF_FILE_NAME = TOOL_NAME + "-cff.js";
+
 
 /*
 export const SOURCE_STR = "HostingHostingInfrastructureDeployTypeSource";

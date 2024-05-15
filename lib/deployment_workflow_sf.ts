@@ -92,7 +92,22 @@ export class DeploymentWorkflowStepFunction extends Construct {
       handler: 'index.handler',
       memorySize: 512,
       layers: [awsSdkLayer, powerToolLayer],
+      depsLockFilePath: "../lambda/update_kvs/yarn.lock",
       bundling: {
+        commandHooks: {
+          beforeBundling(inputDir: string, outputDir: string) {
+            return [
+              `cd ${inputDir}`,
+              'yarn install --frozen-lockfile',
+            ]
+          },
+          beforeInstall() {
+            return []
+          },
+          afterBundling() {
+            return []
+          }
+        },
         externalModules: [
           '@aws-lambda-powertools/logger',
           '@aws-lambda-powertools/tracer',
@@ -158,7 +173,22 @@ export class DeploymentWorkflowStepFunction extends Construct {
       handler: 'index.handler',
       memorySize: 512,
       layers: [powerToolLayer],
+      depsLockFilePath: "../lambda/delete_old_deployments/yarn.lock",
       bundling: {
+        commandHooks: {
+          beforeBundling(inputDir: string, outputDir: string) {
+            return [
+              `cd ${inputDir}`,
+              'yarn install --frozen-lockfile',
+            ]
+          },
+          beforeInstall() {
+            return []
+          },
+          afterBundling() {
+            return []
+          }
+        },
         externalModules: [
           '@aws-lambda-powertools/logger',
           '@aws-lambda-powertools/tracer',

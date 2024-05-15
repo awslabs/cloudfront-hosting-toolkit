@@ -23,6 +23,7 @@ import { Hosting } from "./hosting";
 interface IParamProps {
   hostingConfiguration: HostingConfiguration;
   buildFilePath: string;
+  cffSourceFilePath: string;
   connectionArn?: string;
   certificateArn?: string;
 }

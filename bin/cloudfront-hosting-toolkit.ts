@@ -23,6 +23,7 @@ import * as path from "path";
 import {
   BUILD_FILE_NAME,
   CONFIG_FILE_NAME,
+  CFF_FILE_NAME,
   TOOL_NAME,
 } from "./cli/shared/constants";
 import { AwsSolutionsChecks } from "cdk-nag";
@@ -54,6 +55,8 @@ const app = new App();
 
   const buildFilePath = configFilePath + "/" + BUILD_FILE_NAME;
 
+  const cffSourceFilePath = configFilePath + "/" + CFF_FILE_NAME;
+
   var connectionStack;
 
   const mainStackName = calculateMainStackName(hostingConfiguration);
@@ -83,6 +86,7 @@ const app = new App();
       connectionArn: connectionStack?.repositoryConnection.connectionArn,
       hostingConfiguration: hostingConfiguration,
       buildFilePath: buildFilePath,
+      cffSourceFilePath: cffSourceFilePath,
       certificateArn: certificateArn,
     },
     {
