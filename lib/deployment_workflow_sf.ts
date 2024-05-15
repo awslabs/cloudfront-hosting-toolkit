@@ -25,6 +25,7 @@ import {
   aws_logs as logs,
   aws_ssm as ssm,
   RemovalPolicy,
+  Stack,
 } from "aws-cdk-lib";
 
 import { Construct } from "constructs";
@@ -34,6 +35,8 @@ import { IBucket } from "aws-cdk-lib/aws-s3";
 import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { LayerVersion, Runtime, Tracing } from 'aws-cdk-lib/aws-lambda';
 
 
 interface IParamProps {
@@ -44,37 +47,65 @@ interface IParamProps {
   ssmS3KeyParam?: ssm.StringParameter;
 }
 
+const commonProps: Partial<lambda.FunctionProps> = {
+  runtime: lambda.Runtime.NODEJS_20_X,
+  tracing: lambda.Tracing.ACTIVE,
+  timeout: Duration.seconds(30),
+  logRetention: RetentionDays.ONE_MONTH,
+  environment: {
+    NODE_OPTIONS: '--enable-source-maps', // see https://docs.aws.amazon.com/lambda/latest/dg/typescript-exceptions.html
+    POWERTOOLS_SERVICE_NAME: 'pipeline',
+    POWERTOOLS_METRICS_NAMESPACE: 'cloudfront-hosting-toolkit',
+    POWERTOOLS_LOG_LEVEL: 'DEBUG',
+  },
+};
+
+
 export class DeploymentWorkflowStepFunction extends Construct {
   public readonly stepFunction: sfn.IStateMachine;
 
   constructor(scope: Construct, id: string, params: IParamProps) {
     super(scope, id);
 
+   
     const basicLambdaRole = new iam.Role(this, "BasicLambdaRole", {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
     });
 
     const awsSdkLayer = new lambda.LayerVersion(this, "AwsSdkLayer", {
-      compatibleRuntimes: [lambda.Runtime.NODEJS_18_X],
+      compatibleRuntimes: [lambda.Runtime.NODEJS_20_X],
       code: lambda.Code.fromAsset("lambda/layers/aws_sdk"),
       description: "AWS SDK lib including client-cloudfront-keyvaluestore",
     });
 
-    
-    const updateKvs = new lambda.Function(this, "UpdateKvsFunction", {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/update_kvs")),
-      handler: "index.handler",
+    const powerToolLayer = LayerVersion.fromLayerVersionArn(
+      this,
+      'powertools-layer',
+      `arn:aws:lambda:${
+        Stack.of(this).region
+      }:094274105915:layer:AWSLambdaPowertoolsTypeScript:28`
+    )
+
+    const updateKvs = new NodejsFunction(this, "UpdateKvsFunction", {
+      ...(commonProps as lambda.FunctionProps),
+      entry: path.join(__dirname, "../lambda/update_kvs/index.js"),
+      handler: 'index.handler',
       memorySize: 512,
-      timeout: Duration.minutes(10),
-      logRetention: logs.RetentionDays.ONE_WEEK,
-        tracing: lambda.Tracing.ACTIVE,
-        layers: [awsSdkLayer],
-        environment: {
-          KVS_ARN: params.kvsArn,
-        },
-        role: basicLambdaRole,
+      layers: [awsSdkLayer, powerToolLayer],
+      bundling: {
+        externalModules: [
+          '@aws-lambda-powertools/logger',
+          '@aws-lambda-powertools/tracer',
+          '@aws-lambda-powertools/metrics',
+          '@aws-sdk/signature-v4-crt',
+          '@aws-sdk/client-cloudfront-keyvaluestore',
+          '@aws-sdk/signature-v4-multi-region',
+        ]
+      },
+      role: basicLambdaRole
     });
+
+    updateKvs.addEnvironment("KVS_ARN", params.kvsArn );
 
     updateKvs.addToRolePolicy(
       new iam.PolicyStatement({
@@ -121,23 +152,24 @@ export class DeploymentWorkflowStepFunction extends Construct {
       },
     ]);
 
-    const deleteOldDeployments = new lambda.Function(
-      this,
-      "DeleteOldDeployments",
-      {
-        runtime: lambda.Runtime.NODEJS_18_X,
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, "../lambda/delete_old_deployments")
-        ),
-        timeout: Duration.seconds(300),
-        handler: "index.handler",
-        environment: {
-          BUCKET_NAME: params.hostingBucket.bucketName,
-        },
-        logRetention: logs.RetentionDays.ONE_WEEK,
-        role: basicLambdaRole,
-      }
-    );
+    const deleteOldDeployments = new NodejsFunction(this, "DeleteOldDeployments", {
+      ...(commonProps as lambda.FunctionProps),
+      entry: path.join(__dirname, "../lambda/delete_old_deployments/index.js"),
+      handler: 'index.handler',
+      memorySize: 512,
+      layers: [powerToolLayer],
+      bundling: {
+        externalModules: [
+          '@aws-lambda-powertools/logger',
+          '@aws-lambda-powertools/tracer',
+          '@aws-lambda-powertools/metrics'
+        ]
+      },
+      role: basicLambdaRole
+    });
+
+    deleteOldDeployments.addEnvironment("BUCKET_NAME", params.hostingBucket.bucketName);
+
 
     deleteOldDeployments.addToRolePolicy(
       new iam.PolicyStatement({

@@ -54,6 +54,9 @@ import { addCfnSuppressRules } from "./cfn_nag/cfn_nag_utils";
 import { NagSuppressions } from "cdk-nag";
 import { DeploymentWorkflowStepFunction } from "./deployment_workflow_sf";
 import { HostingConfiguration } from "../bin/cli/shared/types";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import { LayerVersion} from 'aws-cdk-lib/aws-lambda';
+
 
 interface IConfigProps {
   hostingConfiguration: HostingConfiguration;
@@ -63,6 +66,19 @@ interface IConfigProps {
   changeUri: cloudfront.Function;
   buildFilePath: string
 }
+
+const commonProps: Partial<lambda.FunctionProps> = {
+  runtime: lambda.Runtime.NODEJS_20_X,
+  tracing: lambda.Tracing.ACTIVE,
+  timeout: Duration.seconds(30),
+  logRetention: RetentionDays.ONE_MONTH,
+  environment: {
+    NODE_OPTIONS: '--enable-source-maps', // see https://docs.aws.amazon.com/lambda/latest/dg/typescript-exceptions.html
+    POWERTOOLS_SERVICE_NAME: 'pipeline',
+    POWERTOOLS_METRICS_NAMESPACE: 'cloudfront-hosting-toolkit',
+    POWERTOOLS_LOG_LEVEL: 'DEBUG',
+  },
+};
 
 export class PipelineInfrastructure extends Construct {
   constructor(scope: Construct, id: string, params: IConfigProps) {
@@ -149,6 +165,17 @@ export class PipelineInfrastructure extends Construct {
 
       const pipelineArn = `arn:aws:codepipeline:${Aws.REGION}:${Aws.ACCOUNT_ID}:${pipelineName}`;
 
+      const cloudWatchPolicyStatement =
+        new iam.PolicyStatement({
+          effect: iam.Effect.ALLOW,
+          actions: [
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:PutLogEvents",
+          ],
+          resources: ["arn:aws:logs:*:*:*"],
+        });
+      
       const paramPolicyStatement = new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
         actions: ["ssm:PutParameter"],
@@ -171,20 +198,40 @@ export class PipelineInfrastructure extends Construct {
       );
       buildSrcBucket.enableEventBridgeNotification();
 
-      const newBuild = new lambda.Function(this, "NewBuildProcess", {
-        runtime: lambda.Runtime.NODEJS_18_X,
-        code: lambda.Code.fromAsset(
-          path.join(__dirname, "../lambda/new_build")
-        ),
-        handler: "index.handler",
-        environment: {
-          SSM_PARAM_COMMITID: ssmCommitIdParam!.parameterName,
-          SSM_PARAM_S3_KEY: ssmS3KeyParam?.parameterName!,
-          PIPELINE_NAME: pipelineName,
-        },
-        logRetention: logs.RetentionDays.ONE_WEEK,
+
+      const basicLambdaRole = new iam.Role(this, "BasicLambdaRole", {
+        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       });
 
+      const powerToolLayer = LayerVersion.fromLayerVersionArn(
+        this,
+        'powertools-layer',
+        `arn:aws:lambda:${
+          Stack.of(this).region
+        }:094274105915:layer:AWSLambdaPowertoolsTypeScript:28`
+      )
+  
+      const newBuild = new NodejsFunction(this, "NewBuildFunction", {
+        ...(commonProps as lambda.FunctionProps),
+        entry: path.join(__dirname, "../lambda/new_build/index.js"),
+        depsLockFilePath: path.join(__dirname, "../src/lambda-handlers/lambdaFunction/package-lock.json"),        
+        handler: 'index.handler',
+        memorySize: 512,
+        layers: [powerToolLayer],
+        bundling: {
+          externalModules: [
+            '@aws-lambda-powertools/logger',
+            '@aws-lambda-powertools/tracer',
+            '@aws-lambda-powertools/metrics'
+          ]
+        },
+        role: basicLambdaRole
+      });
+      newBuild.addEnvironment("SSM_PARAM_COMMITID", ssmCommitIdParam!.parameterName );
+      newBuild.addEnvironment("SSM_PARAM_S3_KEY", ssmS3KeyParam?.parameterName! );
+      newBuild.addEnvironment("PIPELINE_NAME", pipelineName );
+
+      newBuild.addToRolePolicy(cloudWatchPolicyStatement);
       newBuild.addToRolePolicy(paramPolicyStatement);
       newBuild.addToRolePolicy(pipelinePolicyStatement);
 
@@ -346,7 +393,7 @@ export class PipelineInfrastructure extends Construct {
 
     const myCodeBuild = new codebuild.PipelineProject(this, "Project", {
       environment: {
-        buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+        buildImage: codebuild.LinuxBuildImage.STANDARD_7_0,
         computeType: codebuild.ComputeType.MEDIUM,
       },
       buildSpec: codebuild.BuildSpec.fromObject(buildSpecYaml),

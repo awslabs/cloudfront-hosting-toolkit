@@ -160,7 +160,7 @@ export default async function handleDeployCommand() {
 
     if (getPendingConnections) {
       //there are connection in PENDING STATE, wait for the user to validate them
-      await connection_prompt();
+      await connection_prompt(counter++);
     }
     
   } else if (isS3Config(hostingConfiguration)) {
@@ -321,11 +321,11 @@ export default async function handleDeployCommand() {
   }
 }
 
-async function connection_prompt() {
+async function connection_prompt(counter: number) {
   const connectionRegion = await getSSMParameter(SSM_CONNECTION_REGION_STR);
   const connectionName = await getSSMParameter(SSM_CONNECTION_NAME_STR);
 
-  console.log("\n --> 3. Configure github connection\n");
+  console.log(`\n --> ${counter}. Configure github connection\n`);
 
   console.log(
     "You need to complete Github authentication using the AWS Console."
