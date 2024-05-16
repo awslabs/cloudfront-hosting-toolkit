@@ -20,6 +20,7 @@ import { STSClient, GetCallerIdentityCommand } from "@aws-sdk/client-sts";
 import {
   GetPipelineStateCommand,
   CodePipelineClient,
+  StartPipelineExecutionCommand,
 } from "@aws-sdk/client-codepipeline";
 import {
   CodeStarConnectionsClient,
@@ -91,7 +92,6 @@ export default async function checkAWSConnection() {
   try {
     await stsClient.send(getCallerIdentityCommand);
     const currentRegion = await loadConfig(NODE_REGION_CONFIG_OPTIONS, NODE_REGION_CONFIG_FILE_OPTIONS)();
-    console.log("currentRegion:"+currentRegion)
 
     return true;
   } catch (error) {
@@ -661,6 +661,31 @@ export async function getSSMParameter(parameterName: string) {
     
     console.error(`Error retrieving parameter ${parameterName}`, err);
     throw err;
+  }
+}
+
+
+
+export async function startPipelineExecution() {
+  try {
+    
+    const pipelineName = await getSSMParameter(SSM_PIPELINENAME_STR);
+    const params = {
+      name: pipelineName,
+    };
+
+    const pipelineStatus = await getPipelineStatus();
+    if (pipelineStatus.status !== "InProgress") {
+      const command = new StartPipelineExecutionCommand(params);
+      const response = await clientCodePipeline.send(command);
+      console.log(`Pipeline execution started successfully`);
+    }else{
+      console.log("Pipeline is already in progress.");
+    }
+    
+  } catch (error) {
+    console.error("Error starting pipeline execution:", error);
+    throw error;
   }
 }
 

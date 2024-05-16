@@ -37,6 +37,7 @@ import checkAWSConnection, {
   getPipelineStatus,
   getSSMParameter,
   pendingConnections,
+  startPipelineExecution,
   waitCertificateToBeIssued,
 } from "../utils/awsSDKUtil";
 import fs from "fs";
@@ -311,7 +312,7 @@ export default async function handleDeployCommand() {
     console.log(
       "You can review the resources deployed by logging into the AWS Management Console at https://aws.amazon.com/console \n"
     );
-
+    await startPipelineExecution();
     await checkPipelineStatus();
   } else {
     console.error(

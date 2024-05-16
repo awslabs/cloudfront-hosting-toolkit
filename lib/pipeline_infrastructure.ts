@@ -67,19 +67,6 @@ interface IConfigProps {
   buildFilePath: string
 }
 
-const commonProps: Partial<lambda.FunctionProps> = {
-  runtime: lambda.Runtime.NODEJS_20_X,
-  tracing: lambda.Tracing.ACTIVE,
-  timeout: Duration.seconds(30),
-  logRetention: RetentionDays.ONE_MONTH,
-  environment: {
-    NODE_OPTIONS: '--enable-source-maps', // see https://docs.aws.amazon.com/lambda/latest/dg/typescript-exceptions.html
-    POWERTOOLS_SERVICE_NAME: 'pipeline',
-    POWERTOOLS_METRICS_NAMESPACE: 'cloudfront-hosting-toolkit',
-    POWERTOOLS_LOG_LEVEL: 'DEBUG',
-  },
-};
-
 export class PipelineInfrastructure extends Construct {
   constructor(scope: Construct, id: string, params: IConfigProps) {
     super(scope, id);
@@ -198,38 +185,21 @@ export class PipelineInfrastructure extends Construct {
       );
       buildSrcBucket.enableEventBridgeNotification();
 
-
-      const basicLambdaRole = new iam.Role(this, "BasicLambdaRole", {
-        assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
-      });
-
-      const powerToolLayer = LayerVersion.fromLayerVersionArn(
-        this,
-        'powertools-layer',
-        `arn:aws:lambda:${
-          Stack.of(this).region
-        }:094274105915:layer:AWSLambdaPowertoolsTypeScript:28`
-      )
   
-      const newBuild = new NodejsFunction(this, "NewBuildFunction", {
-        ...(commonProps as lambda.FunctionProps),
-        entry: path.join(__dirname, "../lambda/new_build/index.js"),
-        depsLockFilePath: path.join(__dirname, "../src/lambda-handlers/lambdaFunction/package-lock.json"),        
-        handler: 'index.handler',
-        memorySize: 512,
-        layers: [powerToolLayer],
-        bundling: {
-          externalModules: [
-            '@aws-lambda-powertools/logger',
-            '@aws-lambda-powertools/tracer',
-            '@aws-lambda-powertools/metrics'
-          ]
+      const newBuild = new lambda.Function(this, "NewBuildProcess", {
+        runtime: lambda.Runtime.NODEJS_18_X,
+        code: lambda.Code.fromAsset(
+          path.join(__dirname, "../lambda/new_build")
+        ),
+        handler: "index.handler",
+        environment: {
+          SSM_PARAM_COMMITID: ssmCommitIdParam!.parameterName,
+          SSM_PARAM_S3_KEY: ssmS3KeyParam?.parameterName!,
+          PIPELINE_NAME: pipelineName,
         },
-        role: basicLambdaRole
+        logRetention: logs.RetentionDays.ONE_WEEK,
       });
-      newBuild.addEnvironment("SSM_PARAM_COMMITID", ssmCommitIdParam!.parameterName );
-      newBuild.addEnvironment("SSM_PARAM_S3_KEY", ssmS3KeyParam?.parameterName! );
-      newBuild.addEnvironment("PIPELINE_NAME", pipelineName );
+
 
       newBuild.addToRolePolicy(cloudWatchPolicyStatement);
       newBuild.addToRolePolicy(paramPolicyStatement);
