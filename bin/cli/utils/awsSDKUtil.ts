@@ -95,7 +95,7 @@ export default async function checkAWSConnection() {
 
     return true;
   } catch (error) {
-    console.log(error)
+    
     console.error(
       `${ERROR_PREFIX} Impossible to connect to your the AWS account. Try to authenticate and try again.`
     );

@@ -56,7 +56,6 @@ export class Hosting extends Construct {
       keyValueStoreName: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65)
     });
 
-    
     let cloudFrontFunctionCode = fs.readFileSync(params.cffSourceFilePath, 'utf-8');
 
     cloudFrontFunctionCode = cloudFrontFunctionCode.replace(/__KVS_ID__/g, uriStore.keyValueStoreId);

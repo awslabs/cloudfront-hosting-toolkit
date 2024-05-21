@@ -52,11 +52,10 @@ async function handler(event) {
   var request = event.request;
   var uri = request.uri;
 
-  console.log("BEFORE:" + request.uri);
-  // Update the request URI using our rules
-  request.uri = await updateURI(uri);
-  
-  console.log("AFTER:" + request.uri);
+  //console.log("URI BEFORE: " + request.uri); -> Uncomment if needed
+  request.uri = await updateURI(uri); 
+  //console.log("URI AFTER: " + request.uri);-> Uncomment if needed
+
 
   return request;
 }

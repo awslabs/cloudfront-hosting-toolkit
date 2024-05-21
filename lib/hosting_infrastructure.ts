@@ -140,9 +140,20 @@ export class HostingInfrastructure extends Construct {
       }
     );
 
-    const imgCachePolicy = new cloudfront.CachePolicy(this, "ImgCachePolicy", {
+    const imgCachePolicy = new cloudfront.CachePolicy(this, "ImagesCachePolicy", {
       cachePolicyName: "ImagesCachePolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
       comment: "Images cache policy - " + Aws.STACK_NAME + "-" + Aws.REGION,
+      defaultTtl: Duration.days(365),
+      minTtl: Duration.days(365),
+      maxTtl: Duration.days(365),
+      cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+      headerBehavior: cloudfront.CacheHeaderBehavior.none(),
+      queryStringBehavior: cloudfront.CacheQueryStringBehavior.none(),
+    });
+
+    const staticAssetsCachePolicy = new cloudfront.CachePolicy(this, "staticAssetsCachePolicy", {
+      cachePolicyName: "StaticAssetsCachePolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
+      comment: "Static assets cache policy - " + Aws.STACK_NAME + "-" + Aws.REGION,
       defaultTtl: Duration.days(365),
       minTtl: Duration.days(365),
       maxTtl: Duration.days(365),
@@ -165,10 +176,25 @@ export class HostingInfrastructure extends Construct {
       ],
     };
 
-    const customBehaviour: cloudfront.BehaviorOptions = {
+    const imgBehaviour: cloudfront.BehaviorOptions = {
       origin: s3origin,
       responseHeadersPolicy: myResponseHeadersPolicy,
       cachePolicy: imgCachePolicy,
+      allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
+      viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+      functionAssociations: [
+        {
+          function: params.changeUri,
+          eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+        },
+      ],
+    };
+
+    const staticAssetsBehaviour: cloudfront.BehaviorOptions = {
+      origin: s3origin,
+      compress: true,
+      responseHeadersPolicy: myResponseHeadersPolicy,
+      cachePolicy: staticAssetsCachePolicy,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       functionAssociations: [
@@ -230,13 +256,16 @@ export class HostingInfrastructure extends Construct {
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
       defaultBehavior: defaultBehavior,
       additionalBehaviors: {
-        "*.jpg": customBehaviour,
-        "*.jpeg": customBehaviour,
-        "*.png": customBehaviour,
-        "*.gif": customBehaviour,
-        "*.bmp": customBehaviour,
-        "*.tiff": customBehaviour,
-        "*.ico": customBehaviour,
+        "*.jpg": imgBehaviour,
+        "*.jpeg": imgBehaviour,
+        "*.png": imgBehaviour,
+        "*.gif": imgBehaviour,
+        "*.bmp": imgBehaviour,
+        "*.tiff": imgBehaviour,
+        "*.ico": imgBehaviour,
+        "*.js": staticAssetsBehaviour,
+        "*.css": staticAssetsBehaviour,
+        "*.html": staticAssetsBehaviour,
       },
       ...(params.hostingConfiguration.domainName && params.certificateArn
         ? {

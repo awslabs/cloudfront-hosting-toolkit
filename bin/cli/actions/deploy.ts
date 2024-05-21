@@ -64,7 +64,6 @@ interface Command {
 
 export async function createZipArchive() {
   const outputFile = getBuildConfigS3Folder() + "/dummy.zip";
-  console.log("*** HERE *** " + outputFile);
   // Check if the zip file already exists
   if (fs.existsSync(outputFile)) {
     console.log("does not exists...")

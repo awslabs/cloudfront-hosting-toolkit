@@ -47,19 +47,6 @@ interface IParamProps {
   ssmS3KeyParam?: ssm.StringParameter;
 }
 
-const commonProps: Partial<lambda.FunctionProps> = {
-  runtime: lambda.Runtime.NODEJS_20_X,
-  tracing: lambda.Tracing.ACTIVE,
-  timeout: Duration.seconds(30),
-  logRetention: RetentionDays.ONE_MONTH,
-  environment: {
-    NODE_OPTIONS: '--enable-source-maps', // see https://docs.aws.amazon.com/lambda/latest/dg/typescript-exceptions.html
-    POWERTOOLS_SERVICE_NAME: 'pipeline',
-    POWERTOOLS_METRICS_NAMESPACE: 'cloudfront-hosting-toolkit',
-    POWERTOOLS_LOG_LEVEL: 'DEBUG',
-  },
-};
-
 
 export class DeploymentWorkflowStepFunction extends Construct {
   public readonly stepFunction: sfn.IStateMachine;
