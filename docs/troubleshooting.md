@@ -54,9 +54,14 @@ By checking the CodeBuild logs and customizing the build configuration as requir
 ### Issue 3: Website display issue
 
 Please ensure to review the CloudFront function being utilized along with its associated rewrite rules, as they might not align correctly with the framework currently in use.
-You have the option to inspect the source code of the function in your local directory, make modifications as needed, and then redeploy it.
+There are two options available: 
 
+1. You can rerun the `init` command and select a different framework if the initially chosen one wasn't suitable. 
+2. You have the option to modify the code of the CloudFront function and then execute the deployment command again
 The file containing the code for your CloudFront Function can be found at this location. `cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-cff.js`
+
+Inspect the source code of the function in your local directory, make modifications as needed, and then execute the `deploy` command again.
+
 
 
 
