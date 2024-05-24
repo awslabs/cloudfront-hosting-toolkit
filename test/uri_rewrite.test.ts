@@ -59,3 +59,49 @@ describe("Test URI rewrites", () => {
     });
   });
 });
+
+
+describe("Test URI SPA rewrites", () => {
+  // URL rewriting rules
+  function pointsToFile(uri: string) {
+    return /\/[^/]+\.[^/]+$/.test(uri);
+  }
+  var rulePatterns = {
+    "/$": "/index.html", // When URI ends with a '/', append 'index.html'
+    "!file": ".html", // When URI doesn't point to a specific file and doesn't have a trailing slash, append '.html'
+    "!file/": "/index.html"
+  };
+
+  const pathToAdd = "myFolderName";
+
+  // Function to determine rule and update the URI
+  function updateURI(uri: string) {
+    // Check for trailing slash and apply rule.
+    if (!pointsToFile(uri)) {
+      return `/${pathToAdd}/index.html`;
+    }
+    
+    return `/${pathToAdd}${uri}`;
+  }
+
+  test("test uri SPA rewrite", async () => {
+    const testCases = [
+      { input: "/", expected: "/myFolderName/index.html" },
+      { input: "/test", expected: "/myFolderName/index.html" },
+      { input: "/test/", expected: "/myFolderName/index.html" },
+      { input: "/test.jpg", expected: "/myFolderName/test.jpg" },
+      { input: "/folder/", expected: "/myFolderName/index.html" },
+      {
+        input: "/folder/page",
+        expected: "/myFolderName/index.html",
+      },
+
+      // Add more test cases as required
+    ];
+
+    testCases.forEach((testCase, index) => {
+      const result = updateURI(testCase.input);
+      expect(result).toEqual(testCase.expected); // This will assert if the result matches the expected value.
+    });
+  });
+});

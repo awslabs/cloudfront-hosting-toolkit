@@ -274,7 +274,7 @@ For advanced usage scenarios and in-depth configurations, please refer to the [A
 
 ## Troubleshooting Guide
 
-For troubleshooting please refer to the [Troubleshooting Guide](docs/troubleshooting-usage.md).
+For troubleshooting please refer to the [Troubleshooting Guide](docs/troubleshooting.md).
 
 ## Roadmap
 

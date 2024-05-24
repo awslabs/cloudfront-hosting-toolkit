@@ -190,7 +190,7 @@ describe("init_repository", () => {
     await init_repository();
 
     //it should be called 3 times: once at first, once before copying the yml file and once for
-    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(5);
 
     expect(existsSyncSpy).toHaveBeenCalledWith(
       expect.stringContaining(`${TOOL_NAME}/${TOOL_NAME}-config.json`)
@@ -239,7 +239,7 @@ describe("init_repository", () => {
     await init_repository();
 
     //it should be called 3 times: once at first, once before copying the yml file and once for
-    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(5);
 
     expect(existsSyncSpy).toHaveBeenCalledWith(
       expect.stringContaining(`${TOOL_NAME}/${TOOL_NAME}-config.json`)
@@ -288,7 +288,7 @@ describe("init_repository", () => {
     await init_repository();
 
     //it should be called 3 times: once at first, once before copying the yml file and once for
-    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(5);
 
     expect(existsSyncSpy).toHaveBeenCalledWith(
       expect.stringContaining(`${TOOL_NAME}/${TOOL_NAME}-config.json`)
@@ -338,7 +338,7 @@ describe("s3_repository", () => {
     await init_s3();
 
     //it should be called 3 times: once at first, once before copying the yml file and once for
-    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(5);
 
     expect(existsSyncSpy).toHaveBeenCalledWith(
       expect.stringContaining(`${TOOL_NAME}/${TOOL_NAME}-config.json`)
@@ -385,7 +385,7 @@ describe("s3_repository", () => {
     await init_s3();
 
     //it should be called 3 times: once at first, once before copying the yml file and once for
-    expect(existsSyncSpy).toHaveBeenCalledTimes(3);
+    expect(existsSyncSpy).toHaveBeenCalledTimes(5);
 
     expect(existsSyncSpy).toHaveBeenCalledWith(
       expect.stringContaining(`${TOOL_NAME}/${TOOL_NAME}-config.json`)

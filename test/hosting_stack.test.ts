@@ -18,6 +18,7 @@ describe("hosting stack", () => {
         "arn:aws:codestar-connections:eu-west-1:123456:connection/abc",
       hostingConfiguration: hostingConfiguration,
       buildFilePath: path.join(__dirname, "./cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-build.yml"),
+      cffSourceFilePath: path.join(__dirname, "./cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-cff.js"),
       certificateArn: "",
     });
 
@@ -49,6 +50,7 @@ describe("hosting stack", () => {
         "arn:aws:codestar-connections:eu-west-1:123456:connection/abc",
       hostingConfiguration: hostingConfiguration,
       buildFilePath: path.join(__dirname, "./cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-build.yml"),
+      cffSourceFilePath: path.join(__dirname, "./cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-cff.js"),
       certificateArn:
         "arn:aws:acm:us-east-1:123456:certificate/abc",
     });
