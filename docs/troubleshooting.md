@@ -51,4 +51,12 @@ After fixing the permissions, trigger the pipeline again by choosing "Release ch
 
 By checking the CodeBuild logs and customizing the build configuration as required, you can address issues related to the build stage failing in your AWS CodePipeline. This process helps diagnose and resolve build-related problems, ensuring a smoother deployment process for your project.
 
+### Issue 3: Website display issue
+
+Please ensure to review the CloudFront function being utilized along with its associated rewrite rules, as they might not align correctly with the framework currently in use.
+You have the option to inspect the source code of the function in your local directory, make modifications as needed, and then redeploy it.
+
+The file containing the code for your CloudFront Function can be found at this location. `cloudfront-hosting-toolkit/cloudfront-hosting-toolkit-cff.js`
+
+
 

@@ -16,7 +16,11 @@ After running `cloudfront-hosting-toolkit init`, CloudFront Hosting Toolkit will
 
 2. `cloudfront-hosting-toolkit-config.yml`: This YAML file is necessary for CodeBuild to build your website. It contains build configuration information, ensuring that your website is built correctly.
 
-3. During deployment, the CLI generates log files to capture important information and log messages. These log files are named using the format `YYYY-MM-DD_HH-MM-SS.log` and are stored in the `cloudfront-hosting-toolkit` folder. You can review these logs to troubleshoot any deployment issues or monitor the deployment process.
+1. `cloudfront-hosting-toolkit-cff.js`: This JSON file stores the configuration settings gathered during the `init` process. You can review and modify these settings as needed.
+
+3. `cloudfront-hosting-toolkit-config.yml`: This JavaScript file encapsulates the code utilized by the CloudFront Function for URL rewriting. Given the variability in rules based on the framework, this file is accessible for modifications at any time, enabling the addition of additional logic required to execute at the edge.
+
+4. During deployment, the CLI generates log files to capture important information and log messages. These log files are named using the format `YYYY-MM-DD_HH-MM-SS.log` and are stored in the `cloudfront-hosting-toolkit` folder. You can review these logs to troubleshoot any deployment issues or monitor the deployment process.
 
 Make sure to keep these files in the `cloudfront-hosting-toolkit` folder for seamless management of your futur deployments.
 
@@ -31,13 +35,9 @@ Two essential components play vital roles in deploying and managing hosted websi
   - Reads the key-value store to retrieve the folder name, directing users to the latest S3 folder and ensuring consistent access to the most up-to-date content.
   - URL rewriting, enabling efficient service for Single Page Applications (SPAs) and statically generated sites.
 
-The CloudFront function uses three rules:
+A CloudFront Function is allocated for each framework, and it is copied into your current directory during the initialization phase. The reason for having one template per framework is because, for example, between single-page application (SPA) and non-SPA websites, different rewrite rules are required. Additionally, a user may utilize a framework that necessitates specific rewrite rules.
 
-  - For URLs ending with `/`, add `index.html`.
-  - If a URL lacks a specific file,  append `.html`.
-  - When a URL lacks both a file specification and a trailing slash, add `index.html`
-
-You can find additional details in the [source code](../lambda/change_uri/index.js) of the CloudFront Function.
+The function templates can be located within this [folder](../resources/cff_templates).
 
 If your website requires customization beyond the out-of-the-box configurations, you'll likely find yourself making modifications to either the CodeBuild spec YAML file or the CloudFront function code.
 
