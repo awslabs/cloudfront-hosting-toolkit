@@ -60,12 +60,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 
-## [1.1.6] - 2024-02-13
+## [1.1.6] - 2024-05-24
 ### Added
 
-- Use Lambda Power Tools for logging and tracing
 
 ### Changed
 
-- Use typescript for Lambda function instead of javascript
+- Use one CloudFront Function template per framework
+
 ### Fixed
