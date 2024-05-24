@@ -62,19 +62,6 @@ interface Command {
   cmd: any;
 }
 
-export async function createZipArchive() {
-  const outputFile = getBuildConfigS3Folder() + "/dummy.zip";
-  // Check if the zip file already exists
-  if (fs.existsSync(outputFile)) {
-    return;
-  }
-
-  const zip = new AdmZip();
-
-  zip.addLocalFile(getBuildConfigS3Folder() + "/dummy.txt");
-  zip.writeZip(outputFile);
-
-}
 
 export default async function handleDeployCommand() {
   await checkAWSConnection();
@@ -94,10 +81,6 @@ export default async function handleDeployCommand() {
 
   var counter = 1;
   const hostingConfiguration = await loadHostingConfiguration();
-
-  if (isS3Config(hostingConfiguration)) {
-    await createZipArchive();
-  }
 
   var certificateArnCmdParam = "";
   if (hostingConfiguration.domainName) {

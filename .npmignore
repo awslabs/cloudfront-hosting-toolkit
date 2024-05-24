@@ -11,6 +11,8 @@
 !lambda/**/*.js
 !resources/**/*/*.*
 
+!scripts/*.js
+
 !package.json
 !package-lock.json
 

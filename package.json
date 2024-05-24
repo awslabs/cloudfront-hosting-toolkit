@@ -34,8 +34,10 @@
     "audit": "npm audit && cdk synth | cfn_nag",
     "cloudfront-hosting-toolkit": "node bin/cli/index.js",
     "test": "jest --coverage",
-    "postinstall": "cd lambda/layers/aws_sdk/nodejs && npm install"
+    "zipfile": "node scripts/createDummyZip.js", 
+    "postinstall": "cd lambda/layers/aws_sdk/nodejs && npm install && cd ../../../.. && npm run zipfile"
   },
+  
   "devDependencies": {
     "@types/archiver": "5.3.2",
     "@types/aws-lambda": "^8.10.133",

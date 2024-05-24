@@ -67,5 +67,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Use one CloudFront Function template per framework
+- Generate the necessary dummy zip file required by the Pipeline during installation, instead of using the CLI deploy command
 
 ### Fixed
