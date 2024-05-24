@@ -720,15 +720,18 @@ export async function checkPipelineStatus() {
     console.log(
       "To investigate and resolve the issue, please follow these steps:\n"
     );
-    console.log("1. Visit the AWS Management Console.");
-    console.log("2. Navigate to AWS CodePipeline.");
-    console.log(`3. Select the "${pipelineName}" pipeline.`);
+
+    console.log("A. Explore our troubleshooting section https://github.com/awslabs/cloudfront-hosting-toolkit/blob/main/docs/troubleshooting.md\n\n");
+    console.log("B. Inspect the pipeline execution details\n");
+    console.log("   1. Visit the AWS Management Console.");
+    console.log("   2. Navigate to AWS CodePipeline.");
+    console.log(`   3. Select the "${pipelineName}" pipeline.`);
     console.log(
-      "4. Inspect the pipeline execution details and logs for error messages."
+      "   4. Inspect the pipeline execution details and logs for error messages."
     );
-    console.log("5. Take the necessary actions to address the error.");
+    console.log("   5. Take the necessary actions to address the error.");
     console.log(
-      "6. Once resolved, you can trigger a new pipeline execution by choosing 'Release change' on the AWS Console. \n\n"
+      "   6. Once resolved, you can trigger a new pipeline execution by choosing 'Release change' on the AWS Console. \n\n"
     );
 
     // You can add additional actions here if needed.

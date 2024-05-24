@@ -66,10 +66,7 @@ export async function createZipArchive() {
   const outputFile = getBuildConfigS3Folder() + "/dummy.zip";
   // Check if the zip file already exists
   if (fs.existsSync(outputFile)) {
-    console.log("does not exists...")
     return;
-  }else{
-    console.log("Exists...")
   }
 
   const zip = new AdmZip();
