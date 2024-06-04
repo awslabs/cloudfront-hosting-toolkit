@@ -72,14 +72,18 @@ The goal is to provide a versatile and adaptable project that empowers you to wo
 
 
 If you're using a framework that isn't listed above, you can bring your own configuration to tailor CloudFront Hosting Toolkit to your needs. Follow these steps to create a custom configuration:
+1. **Build configuration**
+  - Locate one existing configuration templates at `/installation_folder/resources/build_config_templates/`.
+  - Create a new configuration and keeping the `aws s3 cp` command  in your new file and following this naming pattern: `hosting_YOURFRAMEWORKNAME.yml`.
+  - Customize the configuration file to fit your specific requirements, including any additional libraries or version changes.
 
-- Start by using one of the existing configurations as a template.
-- Locate one existing configuration templates at `/installation_folder/resources/build_config_templates/hosting_angularjs.yml`.
-- Create a new configuration and keeping the `aws s3 cp` command  in your new file and following this naming pattern: `hosting_YOURFRAMEWORKNAME.yml`.
-- Customize the configuration file to fit your specific requirements, including any additional libraries or version changes.
-- Locate an existing JavaScript file used by the CloudFront Function for URL rewriting that is in the `/installation_folder/resources/cff_templates/` directory. Then, create your own JavaScript file for URL rewriting following the naming convention `index_YOURFRAMEWORKNAME.js`.
-- After creating your custom configuration, run the `cloudfront-hosting-toolkit init` command again.
-- When prompted, select your custom configuration from the list.
+2. **CloudFront Function**
+
+  - Locate an existing CloudFront Function source file located at `/installation_folder/resources/cff_templates/`. 
+  - Create your own JavaScript file for URL rewriting following the naming convention `index_YOURFRAMEWORKNAME.js`.
+3. **Run the CLI again**
+  - Run the `cloudfront-hosting-toolkit init` command again.
+  - When prompted, select your custom configuration from the list.
 
 This way, you can seamlessly integrate your unique framework configuration into CloudFront Hosting Toolkit and deploy your website with ease.
 
