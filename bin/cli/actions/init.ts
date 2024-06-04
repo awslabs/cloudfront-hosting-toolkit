@@ -120,7 +120,9 @@ export async function init_repository() {
   const repositoryUrl = repoQuestions.repoUrl;
   const branchName = repoQuestions.branchName;
   const frameworkName = frameworkSelection.framework;
-
+  if(frameworkName === "exit"){
+    process.exit(0);
+  }
   console.log("\n");
   const { domainName, hostedZoneId } = await getUserDomainPreference(
     currentHostingConfig

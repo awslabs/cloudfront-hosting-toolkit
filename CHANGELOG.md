@@ -70,3 +70,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generate the necessary dummy zip file required by the Pipeline during installation, instead of using the CLI deploy command
 
 ### Fixed
+
+## [1.1.7] - 2024-06-04
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+- Address the behavior when a user wants to utilize their own framework that is not included in the existing list of supported frameworks

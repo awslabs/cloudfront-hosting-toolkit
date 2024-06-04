@@ -16,9 +16,7 @@ After running `cloudfront-hosting-toolkit init`, CloudFront Hosting Toolkit will
 
 2. `cloudfront-hosting-toolkit-config.yml`: This YAML file is necessary for CodeBuild to build your website. It contains build configuration information, ensuring that your website is built correctly.
 
-1. `cloudfront-hosting-toolkit-cff.js`: This JSON file stores the configuration settings gathered during the `init` process. You can review and modify these settings as needed.
-
-3. `cloudfront-hosting-toolkit-config.yml`: This JavaScript file encapsulates the code utilized by the CloudFront Function for URL rewriting. Given the variability in rules based on the framework, this file is accessible for modifications at any time, enabling the addition of additional logic required to execute at the edge.
+3. `cloudfront-hosting-toolkit-cff.js`: This JavaScript file encapsulates the code utilized by the CloudFront Function for URL rewriting. Given the variability in rules based on the framework, this file is accessible for modifications at any time, enabling the addition of additional logic required to execute at the edge.
 
 4. During deployment, the CLI generates log files to capture important information and log messages. These log files are named using the format `YYYY-MM-DD_HH-MM-SS.log` and are stored in the `cloudfront-hosting-toolkit` folder. You can review these logs to troubleshoot any deployment issues or monitor the deployment process.
 
@@ -79,6 +77,7 @@ If you're using a framework that isn't listed above, you can bring your own conf
 - Locate one existing configuration templates at `/installation_folder/resources/build_config_templates/hosting_angularjs.yml`.
 - Create a new configuration and keeping the `aws s3 cp` command  in your new file and following this naming pattern: `hosting_YOURFRAMEWORKNAME.yml`.
 - Customize the configuration file to fit your specific requirements, including any additional libraries or version changes.
+- Locate an existing JavaScript file used by the CloudFront Function for URL rewriting that is in the `/installation_folder/resources/cff_templates/` directory. Then, create your own JavaScript file for URL rewriting following the naming convention `index_YOURFRAMEWORKNAME.js`.
 - After creating your custom configuration, run the `cloudfront-hosting-toolkit init` command again.
 - When prompted, select your custom configuration from the list.
 
