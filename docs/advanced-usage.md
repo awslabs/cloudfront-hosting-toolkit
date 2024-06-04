@@ -93,15 +93,14 @@ Instructions for Deploying Based on Your Deployment Type:
 
 1. If you want to deploy from S3 and build the sources yourself:
 
-  - Use the `solution.context.json.template.s3` template file located in the current folder.
-  - Replace the placeholders in the selected template file with your own values, and then copy it to the `./cloudfront-hosting-toolkit` folder.
+  - Use the `solution.context.json.template.s3` template file located in the current folder. Replace the placeholders in the selected template file with your own values, and then copy it to the `./cloudfront-hosting-toolkit` folder with the name `solution.context.json`.
   - Copy the `s3_build_config.yml` file located in the `resources/build_config_templates` folder to the `cloudfront-hosting-toolkit` folder.
+  - Copy the `index_basic.js` file located in the `resources/cff_templates` folder to the `cloudfront-hosting-toolkit` folder.
 
 2. If you want the sources to be built by the built-in pipeline and deploy from GitHub:
 
-  - Use the `solution.context.json.template.github` template file located in the current folder.
-  - Replace the placeholders in the selected template file with your own values, and then copy it to the `cloudfront-hosting-toolkit` folder.
-  - Use the `hosting_[framework].yml` template file located in the `resources/build_config_templates` folder to customize your deployment.
-  - Copy the chosen template file into the `./cloudfront-hosting-toolkit` folder.
+  - Use the `solution.context.json.template.github` template file located in the current folder. Replace the placeholders in the selected template file with your own values, and then copy it to the `cloudfront-hosting-toolkit` folder with the name `solution.context.json`.
+  - Use the `hosting_YOURFRAMEWORKNAME.yml` template file located in the `resources/build_config_templates` folder to customize your deployment then copy it to the `cloudfront-hosting-toolkit` folder.
+  - Use the `index_YOURFRAMEWORKNAME.js` template file located in the `resources/cff_config_templates` folder to customize your deployment then copy it to the `cloudfront-hosting-toolkit` folder.
 
 
