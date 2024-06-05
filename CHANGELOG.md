@@ -93,3 +93,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Lambda layer path
 - Update Readme CDK Usage
+
+## [1.1.9] - 2024-06-05
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+- Fix A record
+

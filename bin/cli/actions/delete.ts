@@ -70,7 +70,7 @@ export async function handleDeleteCommand() {
     if(domainName){
       const cFCNAMEExists = await checkCFCNAMEExists(
         hostingConfiguration.domainName,
-        domainName.substring(8),
+        domainName,
         hostingConfiguration.hostedZoneId
       );
       if (cFCNAMEExists) {
@@ -80,7 +80,7 @@ export async function handleDeleteCommand() {
   
         await deleteCFCNAME(
           hostingConfiguration.domainName,
-          domainName.substring(8),
+          domainName,
           hostingConfiguration.hostedZoneId
         );
       }

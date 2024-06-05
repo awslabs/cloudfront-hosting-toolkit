@@ -59,7 +59,7 @@ export async function handleShowCommand() {
         if (hostingConfiguration.hostedZoneId) {
           const cFCNAMEExists = await checkCFCNAMEExists(
             hostingConfiguration.domainName,
-            domainName.substring(8),
+            domainName,
             hostingConfiguration.hostedZoneId
           );
           if (cFCNAMEExists) {
