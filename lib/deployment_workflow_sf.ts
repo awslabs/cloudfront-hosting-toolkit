@@ -61,7 +61,7 @@ export class DeploymentWorkflowStepFunction extends Construct {
 
     const awsSdkLayer = new lambda.LayerVersion(this, "AwsSdkLayer", {
       compatibleRuntimes: [lambda.Runtime.NODEJS_20_X],
-      code: lambda.Code.fromAsset("lambda/layers/aws_sdk"),
+      code: lambda.Code.fromAsset(path.join(__dirname, "../lambda/layers/aws_sdk")),
       description: "AWS SDK lib including client-cloudfront-keyvaluestore",
     });
 

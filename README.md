@@ -221,7 +221,8 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
     new Hosting(this, "MyHosting", {
         hostingConfiguration: config,
         buildFilePath: "buildConfigurationFile.yml",
-        connectionArn: repositoryConnection.connectionArn
+        connectionArn: repositoryConnection.connectionArn,
+        cffSourceFilePath: "index.js"
     });
 
   ```
@@ -241,13 +242,14 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
 
     new Hosting(this, "MyHosting", {
         hostingConfiguration: config,
-        buildFilePath: "buildConfigurationFile.yml"
+        buildFilePath: "buildConfigurationFile.yml",
+        cffSourceFilePath: "index.js"
     });
 
   ```
 
 
-Please note that the `buildConfigurationFile.yml` should be specified as the relative path to your existing CodeBuild file.
+Please note that the `buildConfigurationFile.yml` and `index.js` should be specified as the relative path to your existing CodeBuild file.
 
 ### CDK Source Code
 
