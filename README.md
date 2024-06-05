@@ -258,7 +258,7 @@ This approach allows you to tailor the integration precisely to your project's d
 
 
 ```bash
-git clone https://github.com/USERNAME/cloudFront-hosting-toolkit.git
+git clone https://github.com/awslabs/cloudfront-hosting-toolkit.git
 ```
 
 
