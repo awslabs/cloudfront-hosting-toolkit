@@ -206,9 +206,7 @@ export default async function handleDeployCommand() {
 
         if (!cFCNAMEExists) {
           const associate = await startPrompt(cloudFrontAssociationQuestion);
-          console.log("associate.value="+associate.value)
           if (associate.value == "yes") {
-            console.log("here")
             await createCFCNAME(
               hostingConfiguration.domainName,
               domainName.substring(8),
