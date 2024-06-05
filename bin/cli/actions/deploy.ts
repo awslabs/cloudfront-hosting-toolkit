@@ -200,18 +200,16 @@ export default async function handleDeployCommand() {
       if (hostingConfiguration.hostedZoneId) {
         const cFCNAMEExists = await checkCFCNAMEExists(
           hostingConfiguration.domainName,
-          domainName.substring(8),
+          domainName,
           hostingConfiguration.hostedZoneId
         );
 
         if (!cFCNAMEExists) {
           const associate = await startPrompt(cloudFrontAssociationQuestion);
-          console.log("associate.value="+associate.value)
           if (associate.value == "yes") {
-            console.log("here")
             await createCFCNAME(
               hostingConfiguration.domainName,
-              domainName.substring(8),
+              domainName,
               hostingConfiguration.hostedZoneId
             );
           }
@@ -241,7 +239,7 @@ export default async function handleDeployCommand() {
         console.log(
           `>           Host name: ${hostingConfiguration.domainName}`
         );
-        console.log(`>           Target: ${domainName.substring(8)}`);
+        console.log(`>           Target: ${domainName}`);
         console.log(">       Save your changes.");
 
         console.log("\n");
