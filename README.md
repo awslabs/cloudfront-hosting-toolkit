@@ -207,7 +207,7 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
   
   ```typescript
   
-    import { RepositoryConnection, Hosting } from 'cloudfront-hosting-toolkit';
+    import { RepositoryConnection, Hosting } from '@aws/cloudfront-hosting-toolkit';
 
     ...
 
@@ -224,6 +224,7 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
         connectionArn: repositoryConnection.connectionArn,
         cffSourceFilePath: "index.js"
     });
+    
 
   ```
 
@@ -231,7 +232,7 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
 
   ```typescript
   
-    import { Hosting } from 'cloudFront-hosting-toolkit';
+    import { Hosting } from '@aws/cloudfront-hosting-toolkit';
 
     ...
 
