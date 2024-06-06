@@ -250,24 +250,21 @@ You can use CloudFront Hosting Toolkit as a CDK construct within your CDK code t
   ```
 
 
-Please note that the `buildConfigurationFile.yml` and `index.js` should be specified as the relative path to your existing CodeBuild file.
 
 To create your own `buildConfigurationFile.yml` file, follow these steps:
 
-1 - Locate an existing configuration template at `/installation_folder/resources/build_config_templates/`
-
-2 - Use an existing template to create a new configuration file within your project directory, ensuring to maintain the aws s3 cp command within the new file, and tailor it to suit your framework's needs. Customize the configuration file to align with your specific requirements, including any necessary adjustments for additional libraries or version changes.
-
-3 - You have the flexibility to choose any name for the file.
+1. Locate an existing configuration template at `/installation_folder/resources/build_config_templates/`
+2. Use an existing template to create a new configuration file within your project directory, ensuring to maintain the aws s3 cp command within the new file, and tailor it to suit your framework's needs. Customize the configuration file to align with your specific requirements, including any necessary adjustments for additional libraries or version changes.
+3. You have the flexibility to choose any name for the file.
 
 
 To create your own `index.js` file, follow these steps:
 
-1 - Find an existing CloudFront Function source file from `/installation_folder/resources/cff_templates/`
+1. Find an existing CloudFront Function source file from `/installation_folder/resources/cff_templates/`
+2. Use an existing file to create your own javascript file for URL rewriting
+3. You have the flexibility to choose any name for the file.
 
-2 - Use an existing file to create your own javascript file for URL rewriting
-
-3 - You have the flexibility to choose any name for the file.
+Please note that the `buildConfigurationFile.yml` and `index.js` should be specified as the relative path to your existing CodeBuild file.
 
 
 ### CDK Source Code
