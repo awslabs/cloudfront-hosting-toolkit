@@ -3,9 +3,9 @@ name: Create Release
 on: 
   workflow_dispatch
     inputs:
-    tag-name:
-      description: 'Tag name'
-      required: false
+      tag-name:
+        description: 'Tag name'
+        required: false
 
 jobs:
   create_release:
