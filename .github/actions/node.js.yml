@@ -3,12 +3,6 @@
 
 name: Node.js CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
 jobs:
   publish-to-npm:
 
@@ -24,10 +18,13 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+        
     - run: npm install
     - run: npm run build
     - run: cp cdk.json.built cdk.json
     - run: npm pack
+    - run: npm adduser
+    - run: npm whoami  
     - run: npm publish --access=public
       env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
