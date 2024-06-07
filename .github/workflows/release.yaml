@@ -3,7 +3,7 @@ name: Create Release
 on: 
   workflow_dispatch:
     inputs:
-      tag-name:
+      tagname:
         description: 'Tag name'
         required: false
 
@@ -20,8 +20,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ tag-name }}
-        release_name: ${{ tag-name }}
+        tag_name: ${{ github.event.inputs.tagname }}
+        release_name: ${{ github.event.inputs.tagname }}
         draft: false
         prerelease: false
         generate_release_notes: true
