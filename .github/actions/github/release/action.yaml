@@ -1,0 +1,46 @@
+name: "Create a release"
+
+description: "Creates a release"
+
+inputs:
+  github-token:
+    description: "GitHub token of a user with permission to create a release"
+    required: true
+
+runs:
+  using: "composite"
+
+  steps:
+    - name: "Determine tag"
+      if: "${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'"
+      run: "echo \"RELEASE_TAG=${GITHUB_REF#refs/tags/}\" >> $GITHUB_ENV"
+      shell: "bash"
+
+    - name: "Create release"
+      uses: "actions/github-script@v7.0.1"
+      with:
+        github-token: "${{ inputs.github-token }}"
+        script: |
+          if (!process.env.RELEASE_TAG) {
+            core.setFailed("The environment variable RELEASE_TAG is not defined.")
+
+            return;
+          }
+
+          try {
+            const response = await github.rest.repos.createRelease({
+              draft: false,
+              generate_release_notes: true,
+              name: process.env.RELEASE_TAG,
+              owner: context.repo.owner,
+              prerelease: false,
+              repo: context.repo.repo,
+              tag_name: process.env.RELEASE_TAG,
+            });
+
+            core.exportVariable('RELEASE_HTML_URL', response.data.html_url);
+            core.exportVariable('RELEASE_ID', response.data.id);
+            core.exportVariable('RELEASE_UPLOAD_URL', response.data.upload_url);
+          } catch (error) {
+            core.setFailed(error.message);
+          }

@@ -105,3 +105,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix A record
 
+
+## [1.1.10] - 2024-06-05
+### Added
+
+- Add option to submit a feature request
+
+
+### Changed
+
+
+### Fixed
+
+
