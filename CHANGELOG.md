@@ -106,7 +106,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix A record
 
 
-## [1.1.10] - 2024-06-05
+## [1.1.10] - 2024-06-07
 ### Added
 
 - Add option to submit a feature request
@@ -118,3 +118,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 
+## [1.1.11] - 2024-06-07
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+- fix wording for A record
+- update a few prompts to be more explicit

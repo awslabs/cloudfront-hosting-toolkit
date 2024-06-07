@@ -22,11 +22,10 @@ import {
   getCLIInstallationFolder,
   loadHostingConfiguration,
 } from "../utils/helper";
-import { CDKCommand} from "../shared/types";
 import { hostingInfrastructureDeletionConfirmation } from "../utils/prompt_questions";
 import checkAWSConnection, {
   checkCertificateExists,
-  checkCFCNAMEExists,
+  checkCFARecordExists,
   deleteACMCertificate,
   deleteCFCNAME,
   getSSMParameter,
@@ -68,7 +67,7 @@ export async function handleDeleteCommand() {
     const domainName = await getSSMParameter(SSM_DOMAIN_STR);
 
     if(domainName){
-      const cFCNAMEExists = await checkCFCNAMEExists(
+      const cFCNAMEExists = await checkCFARecordExists(
         hostingConfiguration.domainName,
         domainName,
         hostingConfiguration.hostedZoneId

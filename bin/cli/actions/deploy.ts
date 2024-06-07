@@ -31,9 +31,9 @@ import {
 import checkAWSConnection, {
   checkBucketExists,
   checkCertificateExists,
-  checkCFCNAMEExists,
+  checkCFARecordExists,
   createACMCertificate,
-  createCFCNAME,
+  createCFARecord,
   getPipelineStatus,
   getSSMParameter,
   pendingConnections,
@@ -198,7 +198,7 @@ export default async function handleDeployCommand() {
 
     if (hostingConfiguration.domainName) {
       if (hostingConfiguration.hostedZoneId) {
-        const cFCNAMEExists = await checkCFCNAMEExists(
+        const cFCNAMEExists = await checkCFARecordExists(
           hostingConfiguration.domainName,
           domainName,
           hostingConfiguration.hostedZoneId
@@ -207,7 +207,7 @@ export default async function handleDeployCommand() {
         if (!cFCNAMEExists) {
           const associate = await startPrompt(cloudFrontAssociationQuestion);
           if (associate.value == "yes") {
-            await createCFCNAME(
+            await createCFARecord(
               hostingConfiguration.domainName,
               domainName,
               hostingConfiguration.hostedZoneId
@@ -218,10 +218,7 @@ export default async function handleDeployCommand() {
             `>       Domain name '${hostingConfiguration.domainName}' is already associated with the CloudFront distribution.\n`
           );
         }
-
-        console.log(
-          `>       ${hostingConfiguration.domainName} --> https://${domainName} \n`
-        );
+        
       } else {
         console.log(
           `\nJust a few more steps to get your domain name up and running!`
@@ -251,7 +248,7 @@ export default async function handleDeployCommand() {
     }
     if (isRepoConfig(hostingConfiguration)) {
       console.log(
-        "\nIn the future, whenever you push changes to Github, an automatic pipeline will be triggered to deploy the new version."
+        "\nIn the future, whenever you push changes to your Github repository, an automatic pipeline will be triggered to deploy the new version."
       );
     } else {
       console.log(

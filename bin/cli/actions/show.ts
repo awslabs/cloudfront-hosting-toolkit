@@ -16,7 +16,7 @@
 */
 
 import checkAWSConnection, {
-  checkCFCNAMEExists,
+  checkCFARecordExists,
   checkCertificateExists,
   getSSMParameter,
 } from "../utils/awsSDKUtil";
@@ -57,7 +57,7 @@ export async function handleShowCommand() {
       );
       if (certificateArn && status == "ISSUED") {
         if (hostingConfiguration.hostedZoneId) {
-          const cFCNAMEExists = await checkCFCNAMEExists(
+          const cFCNAMEExists = await checkCFARecordExists(
             hostingConfiguration.domainName,
             domainName,
             hostingConfiguration.hostedZoneId

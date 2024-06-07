@@ -228,7 +228,7 @@ export async function waitCertificateToBeIssued(
  * @param {string} cloudFrontDomainName - The DNS name of the CloudFront distribution.
  * @param {string} hostedZoneId - The ID of the Route 53 hosted zone where the Alias resource record will be created/updated.
  */
-export async function createCFCNAME(
+export async function createCFARecord(
   domainName: string,
   cloudFrontDomainName: string,
   hostedZoneId: string
@@ -254,11 +254,10 @@ export async function createCFCNAME(
   };
 
   try {
-    //await clientR53.changeResourceRecordSets(params);
     const command = new ChangeResourceRecordSetsCommand(input);
     await clientR53.send(command);
     console.log(
-      `\nA new CNAME record has been added/updated to your DNS records that points to your CloudFront distribution: \n`
+      `\nA new A Record has been added/updated to your DNS records that points to your CloudFront distribution: \n`
     );
     console.log(`>       ${domainName} -> ${cloudFrontDomainName}\n`);
     console.log(`It may take a few minutes to reflect the change.`);
@@ -297,7 +296,7 @@ export async function deleteCFCNAME(
     await clientR53.send(command);
 
     console.log(
-      `\nThe CNAME record has been deleted from your DNS records: \n`
+      `\nThe A Record has been deleted from your DNS records: \n`
     );
     console.log(`>       ${domainName} -> ${cloudFrontDomainName}\n`);
     console.log(`It may take a few minutes to reflect the change.`);
@@ -307,7 +306,7 @@ export async function deleteCFCNAME(
   }
 }
 
-export async function checkCFCNAMEExists(
+export async function checkCFARecordExists(
   domainName: string,
   cloudFrontDomainName: string,
   hostedZoneId: string
@@ -678,7 +677,7 @@ export async function startPipelineExecution() {
     if (pipelineStatus.status !== "InProgress") {
       const command = new StartPipelineExecutionCommand(params);
       const response = await clientCodePipeline.send(command);
-      console.log(`Pipeline execution started successfully`);
+      console.log(`The pipeline has been initiated following the recent deployment to apply any changes made.`);
     }else{
       console.log("Pipeline is already in progress.");
     }
