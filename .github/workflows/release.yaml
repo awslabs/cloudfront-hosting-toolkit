@@ -10,7 +10,10 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
-
+    - name: GitHub Tag Name example
+      run: |
+        echo "Tag name from GITHUB_REF_NAME: $GITHUB_REF_NAME"
+        echo "Tag name from github.ref_name: ${{  github.ref_name }}"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -18,7 +21,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref_name }}
-        release_name: ${{ GITHUB_REF_NAME }}
+        release_name: ${{ github.ref_name }}
         draft: false
         prerelease: false
         generate_release_notes: true
