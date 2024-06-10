@@ -129,3 +129,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - fix wording for A record
 - update a few prompts to be more explicit
+
+## [1.1.12] - 2024-06-07
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+- Properly bundles package before publishing to npm
+- Ensure connection stack name follows naming pattern

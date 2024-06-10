@@ -1,6 +1,6 @@
 {
   "name": "@aws/cloudfront-hosting-toolkit",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "description": "CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.",
   "license": "Apache-2.0",
   "bin": {

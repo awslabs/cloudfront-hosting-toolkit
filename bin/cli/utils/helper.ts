@@ -46,6 +46,7 @@ import {
 import { getPipelineStatus, getSSMParameter } from "./awsSDKUtil";
 
 const MAX_STACK_NAME_LENGTH = 128;
+const stackNameRegex = /^[A-Za-z][A-Za-z0-9-]*$/;
 
 /**
  * Retrieves the absolute path of the current working directory.
@@ -166,21 +167,9 @@ export function calculateMainStackName(
     result = hostingConfiguration.s3bucket;
   }
 
-  // Replace non-alphanumeric characters with hyphens
-  result = result.replace(/[^a-zA-Z0-9]/g, '-');
+  result =  cleanStackNameStr(result);
 
-  // Truncate the result to ensure it does not exceed 128 characters
-  result = result.substring(0, MAX_STACK_NAME_LENGTH);
 
-  // Ensure it doesn't end with a hyphen after truncation
-  while (result.endsWith('-')) {
-    result = result.substring(0, result.length - 1);
-  }
-
-  // Ensure it starts with an alphabetic character by prepending 'A' if not.
-  if (!/^[a-zA-Z]/.test(result)) {
-    result = 'A' + result.substring(1);
-  }
 
   return result;
 }
@@ -206,8 +195,26 @@ export function calculateConnectionStackName(
   const parsedUrl = parseRepositoryUrl(repoUrl);
   const { repoOwner, repoName } = parsedUrl;
 
-  const desiredString = `${CONNECTION_STACK_NAME}-${repoName}-${branchName}-${repoOwner}`;
-  return truncateString(desiredString, MAX_STACK_NAME_LENGTH);
+  var desiredString = `${CONNECTION_STACK_NAME}-${repoName}-${branchName}-${repoOwner}`;
+
+  return cleanStackNameStr(desiredString)
+
+}
+
+function cleanStackNameStr(stackName: string) {
+  var desiredString = stackName.replace(/[^a-zA-Z0-9]/g, "-");
+  desiredString = truncateString(desiredString, MAX_STACK_NAME_LENGTH);
+  // Ensure it doesn't end with a hyphen after truncation
+  while (desiredString.endsWith("-")) {
+    desiredString = desiredString.substring(0, desiredString.length - 1);
+  }
+
+  // Ensure it starts with an alphabetic character by prepending 'A' if not.
+  if (!/^[a-zA-Z]/.test(desiredString)) {
+    desiredString = "A" + desiredString.substring(1);
+  }
+
+  return desiredString;
 }
 
 export function calculateCodeStarConnectionStackName(
