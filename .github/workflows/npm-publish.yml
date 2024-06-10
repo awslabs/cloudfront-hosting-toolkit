@@ -16,8 +16,7 @@ jobs:
           node-version: 20
       - run: npm install
       - run: npm run build
-      - run: cp cdk.json.built cdk.json      
-      - run: cp cdk.json.built cdk.json      
+      - run: cp cdk.json.built cdk.json     
 
   publish-npm:
     needs: build
@@ -28,6 +27,8 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
+      - run: npm install
+      - run: npm run build
       - run: npm pack
       - run: npm publish --access=public
         env:
