@@ -141,3 +141,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Properly bundles package before publishing to npm
 - Ensure connection stack name follows naming pattern
+
+## [1.1.15] - 2024-06-07
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+- Removal special characters Action name in CodePipeline

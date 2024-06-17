@@ -46,7 +46,9 @@ import {
 import { getPipelineStatus, getSSMParameter } from "./awsSDKUtil";
 
 const MAX_STACK_NAME_LENGTH = 128;
-const stackNameRegex = /^[A-Za-z][A-Za-z0-9-]*$/;
+const MAX_PIPELINE_NAME_LENGTH = 100;
+const MAX_BUILD_NAME_LENGTH = 150;
+const MAX_ACTION_NAME_LENGTH = 100;
 
 /**
  * Retrieves the absolute path of the current working directory.
@@ -201,9 +203,10 @@ export function calculateConnectionStackName(
 
 }
 
-function cleanStackNameStr(stackName: string) {
+
+function cleanNameStr(stackName: string, maxLength: number) {
   var desiredString = stackName.replace(/[^a-zA-Z0-9]/g, "-");
-  desiredString = truncateString(desiredString, MAX_STACK_NAME_LENGTH);
+  desiredString = truncateString(desiredString, maxLength);
   // Ensure it doesn't end with a hyphen after truncation
   while (desiredString.endsWith("-")) {
     desiredString = desiredString.substring(0, desiredString.length - 1);
@@ -216,6 +219,22 @@ function cleanStackNameStr(stackName: string) {
 
   return desiredString;
 }
+
+function cleanStackNameStr(stackName: string) {
+  return cleanNameStr(stackName, MAX_STACK_NAME_LENGTH)
+}
+
+export function cleanPipelineNameStr(stackName: string) {
+  return cleanNameStr(stackName, MAX_PIPELINE_NAME_LENGTH)
+}
+export function cleanBuildNameStr(stackName: string) {
+  return cleanNameStr(stackName, MAX_BUILD_NAME_LENGTH)
+}
+
+export function cleanActionNameStr(stackName: string) {
+  return cleanNameStr(stackName, MAX_ACTION_NAME_LENGTH)
+}
+
 
 export function calculateCodeStarConnectionStackName(
   repoUrl: string,

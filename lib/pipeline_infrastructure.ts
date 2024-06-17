@@ -36,7 +36,7 @@ import {
   CfnOutput,
 } from "aws-cdk-lib";
 
-import { calculateMainStackName, isRepoConfig, isS3Config, parseRepositoryUrl } from "../bin/cli/utils/helper";
+import { calculateMainStackName, cleanActionNameStr, cleanBuildNameStr, cleanPipelineNameStr, isRepoConfig, isS3Config, parseRepositoryUrl } from "../bin/cli/utils/helper";
 
 import { Construct } from "constructs";
 import { IBucket } from "aws-cdk-lib/aws-s3";
@@ -127,10 +127,14 @@ export class PipelineInfrastructure extends Construct {
       const { repoOwner, repoName } = parsedUrl;
       //the pipeline is triggered from code repository
       pipelineName = repoOwner + "@" + repoName;
+      pipelineName = cleanPipelineNameStr(pipelineName);
       buildName = "Build-And-Copy-to-S3-" + repoName;
+      buildName = cleanBuildNameStr(buildName);
+      const sourceActionName = cleanActionNameStr("GitHub-Source-" + repoName);
+
 
       sourceAction = new codepipeline_actions.CodeStarConnectionsSourceAction({
-        actionName: "GitHub-Source-" + repoName,
+        actionName: sourceActionName,
         owner: repoOwner,
         repo: repoName,
         branch: params.hostingConfiguration.branchName,
@@ -148,6 +152,7 @@ export class PipelineInfrastructure extends Construct {
       });
 
       pipelineName = params.hostingConfiguration.s3bucket;
+      pipelineName = cleanPipelineNameStr(pipelineName);
       buildName = "Unzip-And-Copy-to-S3";
 
       const pipelineArn = `arn:aws:codepipeline:${Aws.REGION}:${Aws.ACCOUNT_ID}:${pipelineName}`;
@@ -427,6 +432,7 @@ export class PipelineInfrastructure extends Construct {
 
     pipeline.addStage({
       stageName: "Sources",
+            
       actions: [sourceAction! as IAction],
     });
 
