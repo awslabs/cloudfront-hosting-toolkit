@@ -35,7 +35,8 @@
     "cloudfront-hosting-toolkit": "node bin/cli/index.js",
     "test": "jest --coverage",
     "zipfile": "node scripts/createDummyZip.js", 
-    "postinstall": "cd lambda/layers/aws_sdk/nodejs && npm install && cd ../../../.. && npm run zipfile"
+    "postinstall": "cd lambda/layers/aws_sdk/nodejs && npm install && cd ../../../.. && npm run zipfile",
+    "postversion": "git push && git push --tags"
   },
   
   "devDependencies": {
