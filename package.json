@@ -1,6 +1,6 @@
 {
   "name": "@aws/cloudfront-hosting-toolkit",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "description": "CloudFront Hosting Toolkit offers the convenience of a managed frontend hosting service while retaining full control over the hosting and deployment infrastructure to make it your own.",
   "license": "Apache-2.0",
   "bin": {
@@ -34,11 +34,10 @@
     "audit": "npm audit && cdk synth | cfn_nag",
     "cloudfront-hosting-toolkit": "node bin/cli/index.js",
     "test": "jest --coverage",
-    "zipfile": "node scripts/createDummyZip.js", 
+    "zipfile": "node scripts/createDummyZip.js",
     "postinstall": "cd lambda/layers/aws_sdk/nodejs && npm install && cd ../../../.. && npm run zipfile",
     "postversion": "git push && git push --tags"
   },
-  
   "devDependencies": {
     "@types/archiver": "5.3.2",
     "@types/aws-lambda": "^8.10.133",
