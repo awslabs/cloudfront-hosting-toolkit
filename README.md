@@ -7,31 +7,18 @@ CloudFront Hosting Toolkit is an open-source command-line tool designed to simpl
 CloudFront Hosting Toolkit is a comprehensive solution that automates the process of setting up and managing a robust, scalable frontend hosting infrastructure on AWS. It leverages several AWS services, including CloudFront, S3, CodePipeline, and Lambda, to create a powerful hosting environment tailored for modern web applications.
 
 Key features include:
-- Automated setup of AWS resources for frontend hosting
-- Continuous deployment pipeline for GitHub and S3-based workflows
-- Optimized content delivery through CloudFront
-- Built-in security features including HTTPS and security headers
-- Custom domain support with automatic SSL/TLS certificate management
-- Flexible configuration options for various frontend frameworks
+- 🚀 Automated setup of AWS resources for frontend hosting
+- 🔄 Continuous deployment pipeline for GitHub and S3-based workflows
+- 🌐 Optimized content delivery through CloudFront
+- 🔒 Built-in security features including HTTPS and security headers
+- 🔗 Custom domain support with automatic SSL/TLS certificate management
+- 🛠️ Flexible configuration options for various frontend frameworks
 
 ## How It Works
 
-CloudFront Hosting Toolkit streamlines the deployment process in the following ways:
+CloudFront Hosting Toolkit streamlines the deployment process through a simple CLI interface. It automatically provisions and configures necessary AWS resources, handles the deployment pipeline, and manages content delivery through CloudFront.
 
-1. **Initialization**: Run `cloudfront-hosting-toolkit init` to set up your project. The tool detects your project settings and guides you through the configuration process.
-
-2. **Infrastructure Setup**: The toolkit automatically provisions and configures necessary AWS resources, including S3 buckets, CloudFront distributions, and CodePipeline workflows.
-
-3. **Deployment**: When you run `cloudfront-hosting-toolkit deploy`, the following happens:
-   - For GitHub sources: Changes pushed to your repository trigger the CodePipeline.
-   - For S3 sources: Uploading a ZIP file to a specified S3 bucket initiates the deployment.
-   - The build process compiles your code and creates deployment artifacts.
-   - Artifacts are uploaded to a hosting S3 bucket in a version-specific folder.
-   - A CloudFront Function is updated to route traffic to the new version.
-
-4. **Content Delivery**: CloudFront serves your content from edge locations, ensuring fast global access.
-
-5. **Updates and Maintenance**: Subsequent deployments follow the same process, with automatic cache invalidation to ensure immediate updates.
+For a detailed explanation of the architecture and workflow, please refer to our [Architecture Documentation](docs/architecture.md).
 
 ## Why Use CloudFront Hosting Toolkit?
 
@@ -44,7 +31,7 @@ CloudFront Hosting Toolkit streamlines the deployment process in the following w
 
 ## Getting Started
 
-### Prerequisites
+### Requirements
 
 - Node.js 18+
 - AWS CLI 2+ configured with your AWS account
@@ -68,17 +55,20 @@ npm install -g @aws/cloudfront-hosting-toolkit
    cloudfront-hosting-toolkit deploy
    ```
 
-For more detailed instructions, see our [Getting Started with CLI](#getting-started-with-the-cli) section.
+For more detailed instructions and advanced usage, please refer to our [CLI Guide](docs/cli-guide.md).
 
-## Advanced Usage
+## Example Commands
 
-CloudFront Hosting Toolkit offers flexibility in how it can be used:
+```bash
+# Show domain name
+cloudfront-hosting-toolkit show
 
-- **CLI**: Use the Command-Line Interface for a straightforward, step-by-step deployment process.
-- **CDK Construct**: Leverage the CloudFront Hosting Toolkit as a ready-made L3 CDK construct for seamless integration into your AWS CDK projects.
-- **CDK Source Code**: Customize the CDK source code to tailor the infrastructure to your specific requirements.
+# Check deployment status
+cloudfront-hosting-toolkit status
 
-For advanced usage scenarios and in-depth configurations, please refer to the [Advanced Usage Guide](docs/advanced-usage.md).
+# Remove hosting infrastructure
+cloudfront-hosting-toolkit delete
+```
 
 ## Architecture
 
@@ -97,6 +87,16 @@ CloudFront Hosting Toolkit sets up a comprehensive AWS architecture for your fro
 
 This architecture ensures a scalable, performant, and maintainable hosting solution for your frontend applications.
 
+## Advanced Usage
+
+CloudFront Hosting Toolkit offers flexibility in how it can be used:
+
+- **CLI**: Use the Command-Line Interface for a straightforward, step-by-step deployment process.
+- **CDK Construct**: Leverage the CloudFront Hosting Toolkit as a ready-made L3 CDK construct for seamless integration into your AWS CDK projects.
+- **CDK Source Code**: Customize the CDK source code to tailor the infrastructure to your specific requirements.
+
+For advanced usage scenarios and in-depth configurations, please refer to the [Advanced Usage Guide](docs/advanced-usage.md).
+
 ## Documentation
 
 - [CLI Guide](docs/cli-guide.md)
@@ -104,6 +104,10 @@ This architecture ensures a scalable, performant, and maintainable hosting solut
 - [Troubleshooting Guide](docs/troubleshooting.md)
 - [FAQ](docs/faq.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
+
+## Roadmap
+
+For information about upcoming features and improvements, please see our [Roadmap](docs/roadmap.md).
 
 ## License
 
