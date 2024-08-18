@@ -3,7 +3,7 @@ name: Build and Deploy Documentation
 on:
   push:
     branches:
-      - documentation
+      - main
     paths:
       - 'docs/**'
   workflow_dispatch:
