@@ -18,7 +18,7 @@ Key features include:
 
 CloudFront Hosting Toolkit streamlines the deployment process through a simple CLI interface. It automatically provisions and configures necessary AWS resources, handles the deployment pipeline, and manages content delivery through CloudFront.
 
-For a detailed explanation of the architecture and workflow, please refer to our [Architecture Documentation](https://awslabs.github.io/cloudfront-hosting-toolkit/architecture/overview).
+For a detailed explanation of the architecture and workflow, please refer to our [Architecture documentation](https://awslabs.github.io/cloudfront-hosting-toolkit/architecture/overview).
 
 ## Why Use CloudFront Hosting Toolkit?
 
