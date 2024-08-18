@@ -85,7 +85,7 @@ CloudFront Hosting Toolkit sets up a comprehensive AWS architecture for your fro
 - **Content Delivery**: CloudFront for global content distribution
 - **Routing**: CloudFront Functions for request handling and routing
 - **Orchestration**: Step Functions for managing deployment processes
-- **State Management**: DynamoDB for storing deployment state information
+- **State Management**: KVS for storing deployment state information
 
 This architecture ensures a scalable, performant, and maintainable hosting solution for your frontend applications.
 
