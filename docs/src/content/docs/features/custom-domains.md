@@ -1,36 +1,64 @@
 ---
-title: Custom Domain Support
+title: Custom domain support
 ---
 
-The Custom Domain Support feature of CloudFront Hosting Toolkit allows you to easily configure and use your own domain names for your deployed websites, ensuring a professional and branded online presence.
+The CloudFront Hosting Toolkit supports custom domain configuration for both Amazon Route 53 users and those using other DNS providers. This flexibility ensures that regardless of your DNS management solution, you can easily set up a custom domain for your CloudFront-hosted website.
 
-## Key Features
+## Route 53 Users vs. Non-Route 53 Users
 
-- **Simple Domain Configuration**: Streamlined process for adding custom domains to your CloudFront distribution.
-- **Automatic DNS Setup**: (When using Amazon Route 53) Automatically configures DNS records for your domain.
-- **Support for Apex and Subdomains**: Allows use of both root domains (e.g., example.com) and subdomains (e.g., www.example.com).
-- **Integration with Existing Domains**: Works with domains you already own, regardless of where they're registered.
+1. **Route 53 Users**
+   - Benefit from a more automated process
+   - The CLI can directly interact with your Route 53 hosted zones
+   - Automatic creation of necessary DNS records
 
-## How It Works
+2. **Non-Route 53 Users**
+   - Receive guided instructions for manual DNS configuration
+   - Need to create DNS records with their respective DNS providers
+   - Still benefit from automated certificate management and CloudFront configuration
 
-1. **Domain Input**: During the setup process, you specify your custom domain name.
-2. **DNS Verification**: The toolkit verifies domain ownership and DNS configuration.
-3. **CloudFront Configuration**: Updates the CloudFront distribution to include your custom domain.
-4. **SSL/TLS Certificate**: Automatically requests and associates an SSL/TLS certificate for your domain (see [SSL/TLS Management](/features/ssl-tls-management)).
-5. **DNS Record Creation**: If using Route 53, creates necessary DNS records; otherwise, provides instructions for manual DNS configuration.
+## The Process
+
+Regardless of your DNS provider, the CLI handles the following steps:
+
+1. **SSL/TLS Certificate Management**
+   - Checks for an existing certificate in AWS Certificate Manager (ACM)
+   - Creates a new certificate if one doesn't exist
+   - Waits for the certificate to be issued and validated
+
+2. **CloudFront Distribution Configuration**
+   - Integrates your custom domain with the CloudFront distribution
+
+3. **DNS Configuration**
+   - This step differs based on your DNS provider:
+
+### For Route 53 Users:
+
+1. The CLI detects that you're using Route 53 based on the provided hosted zone ID
+2. After deploying the CloudFront distribution, it checks if a CNAME record already exists
+3. If no record exists, it prompts you to confirm the creation of a new CNAME record
+4. Upon confirmation, it automatically creates the CNAME record in your Route 53 hosted zone
+
+### For Non-Route 53 Users:
+
+1. The CLI recognizes that you're not using Route 53 (no hosted zone ID provided)
+2. After deploying the CloudFront distribution, it provides detailed instructions for manual DNS configuration
+3. You receive step-by-step guidance on how to create a CNAME record with your DNS provider, including:
+   - The record type (CNAME)
+   - The host name (your custom domain)
+   - The target (the CloudFront distribution domain)
+
+## User Interaction
+
+- **Route 53 Users**: You'll be prompted to confirm the creation of the DNS record. The process is largely automated after your confirmation.
+- **Non-Route 53 Users**: You'll need to manually create the DNS record with your provider using the instructions provided by the CLI.
+
+In both cases, the CLI handles the complex tasks of certificate management and CloudFront configuration, simplifying the process of setting up a custom domain for your static website.
 
 ## Benefits
 
-- **Professional Branding**: Use your own domain name instead of the default CloudFront URL.
-- **Improved SEO**: Custom domains can positively impact your search engine rankings.
-- **Flexibility**: Easily switch between different domains or add multiple domains to a single distribution.
-- **Seamless User Experience**: Provides a consistent URL for your users, regardless of backend changes.
+- Supports users of all DNS providers
+- Automates certificate management and CloudFront configuration
+- Provides a guided experience for non-Route 53 users
+- Offers a near-fully automated process for Route 53 users
 
-## Best Practices
-
-- Secure your domain with HTTPS by using the toolkit's SSL/TLS management feature.
-- If not using Route 53, ensure you have access to modify DNS records for your domain.
-- Consider using www and non-www versions of your domain for better user accessibility.
-- Regularly verify that your domain is correctly pointing to your CloudFront distribution.
-
-Custom Domain Support enhances your website's professional appearance and brand consistency, providing a seamless experience for your users while leveraging the power of CloudFront's global content delivery network.
+By accommodating both Route 53 and non-Route 53 users, the CloudFront Hosting Toolkit ensures a smooth custom domain setup process, regardless of your DNS management solution.

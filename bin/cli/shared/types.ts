@@ -39,17 +39,6 @@ export type HostingConfiguration = (
   } & CommonAttributes
 );
 
-/*export interface IConfiguration {
-  repoUrl?: string;
-  branchName?: string;
-  framework?: string;
-  s3bucket?: string;
-  s3path?: string;
-  domainName?: string;
-  hostedZoneId?: string;
-}*/
-
-    
 
 export interface IChoice {
   title: string;

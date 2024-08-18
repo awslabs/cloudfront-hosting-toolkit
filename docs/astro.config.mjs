@@ -44,35 +44,40 @@ export default defineConfig({
 					"label": "User Guide",
 					"items": [
 						{ "label": "CLI Guide", "link": "/user-guide/cli-guide" },
-						{ "label": "CDK Integration", "link": "/user-guide/cdk-integration" }
+						{
+							label: 'CDK Guide',
+							items: [
+								{ label: 'Overview', link: '/user-guide/cdk-guide' },
+								{ label: 'CDK Construct', link: '/user-guide/cdk-construct' },
+								{ label: 'CDK Source code', link: '/user-guide/cdk-source-code' },
+								{ label: 'Configuration guide', link: '/user-guide/cdk-configuration' },
+							]
+						},	
 					]
 					},
 					{
 					"label": "Features",
 					"items": [
 						{ "label": "Overview", "link": "/features/overview" },
-						{ "label": "Self-paced Setup Wizard", "link": "/features/setup-wizard" },
-						{ "label": "Instant Deployment", "link": "/features/instant-deployment" },
-						{ "label": "GitHub Integration", "link": "/features/github-integration" },
-						{ "label": "Optimized Caching", "link": "/features/optimized-caching" },
-						{ "label": "Enhanced Security Headers", "link": "/features/security-headers" },
-						{ "label": "Custom Domain Support", "link": "/features/custom-domains" },
-						{ "label": "SSL/TLS Management", "link": "/features/ssl-tls-management" }
+						{ "label": "Self-paced wizard", "link": "/features/setup-wizard" },
+						{ "label": "Instant deployment", "link": "/features/instant-deployment" },
+						{ "label": "GitHub integration", "link": "/features/github-integration" },
+						{ "label": "Optimized caching", "link": "/features/optimized-caching" },
+						{ "label": "Security headers", "link": "/features/security-headers" },
+						{ "label": "Custom domain support", "link": "/features/custom-domains" }
 					]
 					},
 					{
 					"label": "Advanced Usage",
 					"items": [
-						{ "label": "Advanced Configuration", "link": "/advanced/configuration" },
-						{ "label": "Custom Frameworks", "link": "/advanced/custom-frameworks" },
-						{ "label": "Bring Your Own Framework", "link": "/advanced/bring-your-own-framework" },
-						{ "label": "Manual Deployment", "link": "/advanced/manual-deployment" }
+						{ "label": "Advanced configuration", "link": "/advanced/configuration" },
+						{ "label": "Bring your own framework", "link": "/advanced/bring-your-own-framework" }
 					]
 					},
 					{
 					"label": "Troubleshooting",
 					"items": [
-						{ "label": "Troubleshooting Guide", "link": "/troubleshooting/guide" }
+						{ "label": "Troubleshooting guide", "link": "/troubleshooting/guide" }
 					]
 					},
 					{

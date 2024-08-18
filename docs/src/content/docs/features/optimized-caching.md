@@ -1,35 +1,41 @@
 ---
-title: Optimized Caching
+title: Optimized caching
 ---
 
 The Optimized Caching feature of CloudFront Hosting Toolkit leverages Amazon CloudFront's powerful caching capabilities to enhance your website's performance, ensuring faster response times and reduced server load.
 
 ## Key Features
 
-- **CloudFront Edge Caching**: Utilizes CloudFront's global network of edge locations for content delivery.
-- **Customizable Caching Rules**: Allows fine-tuning of caching behavior for different types of content.
-- **Automatic Cache Invalidation**: Invalidates relevant cache entries upon new deployments.
-- **Smart Default Settings**: Provides optimized default caching settings suitable for most web applications.
+- **Specialized Cache Policies**: Implements distinct caching strategies for different types of content.
+- **Long-Term Caching**: Utilizes extended cache durations to maximize performance benefits.
+- **Compression Support**: Enables Gzip and Brotli compression for compatible content.
 
 ## How It Works
 
-1. **Content Delivery**: Your website content is distributed to CloudFront edge locations worldwide.
-2. **Request Handling**: When a user requests your website, the nearest edge location serves the content if cached.
-3. **Origin Fetching**: If content is not in the cache, CloudFront retrieves it from the origin (S3 bucket) and caches it for subsequent requests.
-4. **Cache Invalidation**: Upon new deployments, the toolkit automatically invalidates the cache to ensure users receive the latest content.
+### Cache Policies
+
+1. **Default Cache Policy**:
+   - Applied to most content types
+   - Cache duration: 365 days (1 year)
+   - Ignores cookies and query strings
+   - Enables Gzip and Brotli compression
+
+2. **Images Cache Policy**:
+   - Specifically for image files (jpg, jpeg, png, gif, bmp, tiff, ico)
+   - Cache duration: 365 days (1 year)
+   - Ignores cookies, headers, and query strings
+
+3. **Static Assets Cache Policy**:
+   - Applied to js, css, and html files
+   - Cache duration: 365 days (1 year)
+   - Ignores cookies, headers, and query strings
+   - Enables compression
 
 ## Benefits
 
-- **Improved Load Times**: Serves content from geographically closer locations to end-users.
-- **Reduced Origin Load**: Minimizes requests to your origin server, reducing costs and improving scalability.
-- **Consistent Performance**: Maintains fast load times even during traffic spikes.
-- **Bandwidth Savings**: Reduces the amount of data transferred from your origin.
+- **Improved Load Times**: Long-term caching ensures faster content delivery for returning visitors.
+- **Reduced Origin Load**: Extended cache durations minimize requests to the origin S3 bucket.
+- **Optimized for Different Content Types**: Specialized policies for images and static assets ensure appropriate handling.
+- **Reduced Bandwidth Usage**: Compression and efficient caching reduce data transfer.
 
-## Best Practices
-
-- Use appropriate cache-control headers for different types of content.
-- Leverage CloudFront's cache-key customization for more granular caching control.
-- Monitor cache hit ratios and adjust settings as needed for optimal performance.
-- Use versioned file names for static assets to facilitate long-term caching.
-
-Optimized Caching ensures that your website delivers the best possible performance to users around the globe, enhancing user experience and reducing the load on your infrastructure.
+The Optimized Caching feature ensures that your website delivers exceptional performance globally, enhancing user experience and reducing infrastructure load.

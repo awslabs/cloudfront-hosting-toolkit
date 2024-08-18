@@ -1,18 +1,45 @@
 ---
-title: Bring Your Own Framework
+title: Custom Frameworks
 ---
 
-This feature allows you to use CloudFront Hosting Toolkit with any custom framework or build process.
+While CloudFront Hosting Toolkit supports many popular frameworks out-of-the-box, you can configure it for custom frameworks.
 
-## Steps:
+## Steps to Integrate Your Framework
 
-1. Create a custom build script that outputs your site to a directory.
-2. Configure the `cloudfront-hosting-toolkit-config.yml` to use your custom build script.
-3. If needed, create a custom CloudFront Function for URL rewriting.
-4. Use the `cloudfront-hosting-toolkit init` command to set up your project with these custom configurations.
+1. Create a custom build configuration file named `hosting_YOURFRAMEWORKNAME.yml` in the `cloudfront-hosting-toolkit` folder.
+2. Create a custom CloudFront Function file named `index_YOURFRAMEWORKNAME.js` in the same folder.
+3. Run `cloudfront-hosting-toolkit init` again and select your custom framework when prompted.
 
-## Best Practices:
+## Example: Custom Static Site Generator
 
-- Test your build script locally before integrating with the toolkit.
-- Ensure your CloudFront Function handles all necessary URL rewriting scenarios.
-- Document any special requirements or steps for your custom framework.
+For a custom static site generator called "MySSG":
+
+1. Create `hosting_myssg.yml`:
+
+```yaml
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+  build:
+    commands:
+      - npm run generate
+artifacts:
+  base-directory: output
+  files:
+    - '**/*'
+```
+
+2. Create `index_myssg.js`:
+
+```javascript
+function handler(event) {
+    var request = event.request;
+    var uri = request.uri;
+    
+    // Custom URL rewriting logic here
+    
+    return request;
+}
+```

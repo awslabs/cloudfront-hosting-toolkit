@@ -1,5 +1,5 @@
 ---
-title: Instant Deployment
+title: Instant deployment
 ---
 
 The Instant Deployment feature of CloudFront Hosting Toolkit enables rapid and efficient updates to your live website, significantly reducing deployment times and accelerating your development cycle.
@@ -8,8 +8,9 @@ The Instant Deployment feature of CloudFront Hosting Toolkit enables rapid and e
 
 - **Automated Deployment Pipeline**: Leverages AWS CodePipeline for a streamlined deployment process.
 - **Quick Updates**: Changes are reflected on your live site within minutes of pushing code.
-- **Automatic Cache Invalidation**: Ensures visitors always see the latest version of your site.
-- **Versioned Deployments**: Each deployment creates a new version, allowing for easy rollbacks if needed.
+- **Versioned Deployments**: Each deployment creates a new version in a separate S3 folder.
+- **Atomic Updates**: Ensures all users see the new version, never a mix of old and new version.
+- **No Cache Invalidation Required**: CloudFront Function redirects requests to the new folder in S3.
 
 ## How It Works
 
@@ -17,20 +18,15 @@ The Instant Deployment feature of CloudFront Hosting Toolkit enables rapid and e
 2. **Pipeline Trigger**: This action automatically triggers the AWS CodePipeline.
 3. **Build Process**: AWS CodeBuild compiles your code and creates deployment artifacts.
 4. **Artifact Upload**: The built artifacts are uploaded to a new folder in the hosting S3 bucket.
-5. **Traffic Routing**: A CloudFront Function is updated to route traffic to the new folder.
-6. **Cache Invalidation**: CloudFront cache is invalidated to ensure immediate visibility of changes.
+5. **Key-Value Store Update**: The commit ID of the new deployment is stored in a Key-Value Store (KVS).
+6. **Traffic Routing**: A CloudFront Function checks the KVS for the latest commit ID and routes traffic to the corresponding S3 folder.
 
 ## Benefits
 
-- **Reduced Time-to-Live**: Get your changes in front of users faster.
-- **Consistent Deployments**: The automated process ensures consistency across all deployments.
-- **Minimal Downtime**: The process is designed to minimize or eliminate downtime during updates.
-- **Easy Rollbacks**: If issues are detected, you can quickly revert to a previous version.
+- **Instant availability**: New versions of your website are available immediately after deployment.
+- **Consistent user experience**: All users see the same version of the site at any given time.
+- **No mixed content**: Eliminates the risk of serving a mixture of old and new version files to users.
+- **Efficient resource usage**: No need for cache invalidation.
 
-## Best Practices
 
-- Regularly push small, incremental changes rather than large, infrequent updates.
-- Use meaningful commit messages to easily track what each deployment contains.
-- Monitor your deployments using the `cloudfront-hosting-toolkit status` command.
-
-Instant Deployment streamlines your development workflow, allowing you to focus on building features rather than managing complex deployment processes.
+Instant Deployment streamlines your development workflow, allowing you to focus on building features rather than managing complex deployment processes. By leveraging CloudFront Functions and Key-Value Store, it ensures that your users always see a consistent, up-to-date version of your website without the need for cache invalidation or concerns about mixed content during deployments.

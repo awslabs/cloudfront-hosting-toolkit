@@ -1,42 +1,48 @@
 ---
-title: Enhanced Security Headers
+title: Security headers
 ---
 
-The Enhanced Security Headers feature of CloudFront Hosting Toolkit automatically configures crucial HTTP security headers for your website, significantly improving its security posture and protecting against common web vulnerabilities.
+The CloudFront Hosting Toolkit implements a comprehensive set of security headers to enhance the protection of your website against common web vulnerabilities.
 
 ## Key Features
 
-- **Automatic Configuration**: Security headers are set up without manual intervention.
-- **Best Practice Compliance**: Implements headers recommended by security experts and standards bodies.
-- **Customizable Settings**: Allows adjustment of header values to suit specific security requirements.
-- **Regular Updates**: The toolkit stays updated with the latest security header recommendations.
+- **Custom Response Headers Policy**: Applies a set of security headers to all responses from CloudFront.
+- **Comprehensive Protection**: Addresses multiple security concerns with a single configuration.
 
-## Implemented Headers
+## Implemented Security Headers
 
-1. **Content-Security-Policy (CSP)**: Controls which resources the user agent is allowed to load for a given page.
-2. **Strict-Transport-Security (HSTS)**: Ensures the browser always uses HTTPS for your domain.
-3. **X-Content-Type-Options**: Prevents MIME type sniffing.
-4. **X-Frame-Options**: Protects against clickjacking attacks.
-5. **Referrer-Policy**: Controls how much referrer information should be included with requests.
+The following security headers are implemented through a custom Response Headers Policy:
 
-## How It Works
+1. **Content-Type Options**:
+   - Prevents MIME type sniffing.
+   - Helps protect against MIME confusion attacks.
 
-1. **Initial Setup**: During deployment, the toolkit configures CloudFront to add these security headers to all responses.
-2. **Response Modification**: CloudFront automatically adds the configured headers to each HTTP response.
-3. **Browser Enforcement**: Web browsers interpret these headers and enforce the specified security policies.
+2. **Frame Options**:
+   - Set to DENY.
+   - Prevents your content from being embedded in iframes on other domains.
+   - Protects against clickjacking attacks.
+
+3. **Strict Transport Security (HSTS)**:
+   - Enforces HTTPS connections.
+   - Includes subdomains.
+   - Set for a duration of one year (31,536,000 seconds).
+   - Enhances protection against protocol downgrade attacks and cookie hijacking.
+
+4. **XSS Protection**:
+   - Enables the browser's built-in XSS protection.
+   - Set to block mode.
+   - Provides an additional layer of protection against Cross-Site Scripting (XSS) attacks.
+
+5. **Referrer Policy**:
+   - Set to STRICT_ORIGIN_WHEN_CROSS_ORIGIN.
+   - Controls the Referer header sent by the browser.
+   - Balances security and functionality by sending the origin, path, and query string when performing a same-origin request, and only the origin when performing a cross-origin request.
 
 ## Benefits
 
-- **Improved Security Posture**: Protects against various common web vulnerabilities.
+- **Enhanced Security Posture**: Protects against various common web vulnerabilities.
+- **Browser Compatibility**: Implemented headers are widely supported by modern browsers.
+- **Centralized Configuration**: Applied at the CloudFront level, ensuring consistent security across all resources.
 - **Compliance Support**: Helps meet security requirements for various compliance standards.
-- **Automatic Protection**: Provides security benefits without requiring changes to application code.
-- **Consistent Application**: Ensures security headers are applied uniformly across your entire website.
 
-## Best Practices
-
-- Regularly review and update your security header configuration.
-- Use the Content-Security-Policy header in report-only mode initially to identify potential issues.
-- Test your website thoroughly after enabling or modifying security headers.
-- Stay informed about new security headers and best practices in web security.
-
-Enhanced Security Headers provide a robust first line of defense against many common web attacks, significantly enhancing your website's security with minimal effort.
+These security headers work in conjunction with other security features of the CloudFront Hosting Toolkit to provide a robust defense for your web application.
