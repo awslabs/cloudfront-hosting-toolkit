@@ -101,6 +101,7 @@ For more information on how to use CloudFront Hosting Toolkit, including advance
 
 ## Documentation
 
+- [How it works](https://awslabs.github.io/cloudfront-hosting-toolkit/getting-started/how-it-works)
 - [CLI Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cli-guide)
 - [CDK Integration](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cdk-guide)
 - [Troubleshooting Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/troubleshooting/guide)
