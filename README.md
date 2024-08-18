@@ -18,7 +18,7 @@ Key features include:
 
 CloudFront Hosting Toolkit streamlines the deployment process through a simple CLI interface. It automatically provisions and configures necessary AWS resources, handles the deployment pipeline, and manages content delivery through CloudFront.
 
-For a detailed explanation of the architecture and workflow, please refer to our [Architecture Documentation](docs/architecture.md).
+For a detailed explanation of the architecture and workflow, please refer to our [Architecture Documentation](https://awslabs.github.io/cloudfront-hosting-toolkit/architecture/overview).
 
 ## Why Use CloudFront Hosting Toolkit?
 
@@ -30,6 +30,8 @@ For a detailed explanation of the architecture and workflow, please refer to our
 - **Full Control**: Retain the ability to customize and extend your infrastructure.
 
 ## Getting Started
+
+Check out our [documentation](https://awslabs.github.io/cloudfront-hosting-toolkit/) for comprehensive guides on setting up and using the Cloudfront Hosting Toolkit!
 
 ### Requirements
 
@@ -55,7 +57,7 @@ npm install -g @aws/cloudfront-hosting-toolkit
    cloudfront-hosting-toolkit deploy
    ```
 
-For more detailed instructions and advanced usage, please refer to our [CLI Guide](docs/cli-guide.md).
+For more detailed instructions and advanced usage, please refer to our [CLI Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cli-guide).
 
 ## Example Commands
 
@@ -95,14 +97,14 @@ CloudFront Hosting Toolkit offers flexibility in how it can be used:
 - **CDK Construct**: Leverage the CloudFront Hosting Toolkit as a ready-made L3 CDK construct for seamless integration into your AWS CDK projects.
 - **CDK Source Code**: Customize the CDK source code to tailor the infrastructure to your specific requirements.
 
-For advanced usage scenarios and in-depth configurations, please refer to the [Advanced Usage Guide](docs/advanced-usage.md).
+For more information on how to use CloudFront Hosting Toolkit, including advanced usage scenarios and in-depth customization options, please refer to our extensive documentation in the [Advanced section](https://awslabs.github.io/cloudfront-hosting-toolkit/advanced/overview).
 
 ## Documentation
 
-- [CLI Guide](docs/cli-guide.md)
-- [CDK Integration](docs/cdk-integration.md)
-- [Troubleshooting Guide](docs/troubleshooting.md)
-- [FAQ](docs/faq.md)
+- [CLI Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cli-guide)
+- [CDK Integration](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cdk-guide)
+- [Troubleshooting Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/troubleshooting/guide)
+- [FAQ](https://awslabs.github.io/cloudfront-hosting-toolkit/project/faq)
 - [Contributing Guidelines](CONTRIBUTING.md)
 
 ## Roadmap

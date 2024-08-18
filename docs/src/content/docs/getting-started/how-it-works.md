@@ -1,5 +1,5 @@
 ---
-title: How It Works
+title: How it works
 ---
 
 CloudFront Hosting Toolkit simplifies the process of deploying and managing frontend applications on AWS. The toolkit operates in three main steps:
@@ -27,32 +27,34 @@ When you run `cloudfront-hosting-toolkit deploy`:
    - Amazon CloudFront distribution for content delivery
    - AWS CodePipeline for continuous deployment
    - AWS CodeBuild project for building your application
-   - Amazon DynamoDB table for storing deployment metadata
-   - AWS Step Functions for orchestrating the deployment process
-   - CloudFront Functions for request handling
-2. Once the infrastructure is set up, the toolkit triggers the initial deployment of your website content (see "Updates" section for details on this process).
+   - CloudFront Functions for request handling and routing
+   - Key-Value Store (KVS) for storing the latest deployment information
+
+2. Once the infrastructure is set up, the toolkit triggers the initial deployment of your website content.
 
 ## Updates
 
-After the initial deployment, no further use of the CloudFront Hosting Toolkit is required for routine updates. The update process works as follows:
+After the initial deployment, the update process and content delivery work as follows:
 
-1. For every new commit and push to your configured branch, the AWS CodePipeline is automatically triggered.
-2. The pipeline pulls the latest code from the repository (or uses the uploaded ZIP file for S3 sources).
-3. AWS CodeBuild compiles your code and creates deployment artifacts.
-4. Artifacts are uploaded to the hosting S3 bucket in a new folder identified by the commit ID.
-5. Once the new version is deployed, the pipeline triggers an AWS Step Function.
-6. The Step Function updates the DynamoDB Key-Value Store with the new commit ID.
-7. This update to the Key-Value Store instructs the CloudFront Function to route traffic to the newly deployed folder.
-8. This process bypasses cached content from the previous version, ensuring immediate updates.
+<img src="/cloudfront-hosting-toolkit/img/flow.png" alt="CloudFront Hosting Toolkit Flow">
 
-### Content Delivery
 
-The CloudFront Hosting Toolkit implements a robust system for handling requests and ensuring **atomic deployments**:
+1. A developer pushes code changes to the GitHub repository, triggering the AWS CodePipeline (steps 4-5).
 
-1. When a user requests your website, the request hits Amazon CloudFront.
-2. A CloudFront Function intercepts the request and checks the DynamoDB Key-Value Store for the latest deployed folder (commit ID).
-3. The function rewrites the request URL to point to the correct S3 folder corresponding to the latest commit ID.
-4. CloudFront serves the content from the appropriate S3 folder.
+2. CodePipeline fetches the new code and builds the new website version (step 5).
+
+3. The built artifacts are uploaded to a new folder in the S3 bucket, identified by the commit ID (step 6).
+
+4. The Key-Value Store is updated with the new commit ID as the current served website version (step 7).
+
+5. When an end-user requests the website (step 1):
+   - The request hits Amazon CloudFront.
+   - CloudFront executes a function that fetches the latest build ID from the Key-Value Store (step 2).
+   - The function rewrites the URL to include the latest build ID and adds it to the cache key.
+   - CloudFront then requests the content from the correct S3 folder using the rewritten URL (step 3).
+   - The content is served to the user with a 200 OK status.
+
+6. For subsequent requests (step 8), the process repeats, ensuring that users always see the latest version of the website.
 
 This approach enables atomic deployments, providing several key benefits:
 
