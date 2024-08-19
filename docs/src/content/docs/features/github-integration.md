@@ -33,10 +33,10 @@ The GitHub Integration feature of CloudFront Hosting Toolkit provides seamless c
 - **Streamlined workflow**: Integrates directly with your existing Git-based development process.
 - **Security**: OAuth-based authentication ensures secure access without the need for personal access tokens.
 
-## Important Notes
-
-- To create the connection, you must be the GitHub organization owner. For repositories not under an organization, you must be the repository owner.
-- The GitHub Integration feature is not available in certain AWS regions. Check the AWS documentation for the latest information on regional availability.
-- If your CodePipeline service role was created before December 18, 2019, you might need to update its permissions to use `codestar-connections:UseConnection` for AWS CodeStar connections.
+> **Important**
+> 
+>   - To create the connection, you must be the GitHub organization owner. For repositories not under an organization, you must be the repository owner.
+>   - The GitHub Integration feature is not available in certain AWS regions. Check the AWS documentation for the latest information on regional availability.
+>   - If your CodePipeline service role was created before December 18, 2019, you might need to update its permissions to use `codestar-connections:UseConnection` for AWS CodeStar connections.
 
 GitHub Integration bridges the gap between your development workflow and your hosting infrastructure, providing a cohesive and efficient deployment process that aligns with modern development practices while maintaining security and ease of use.

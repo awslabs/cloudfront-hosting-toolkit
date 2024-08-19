@@ -48,7 +48,10 @@ Deploy your website:
 cloudfront-hosting-toolkit deploy
 ```
 
-**Important**: You typically only need to run the deploy command once after your initial init command. Subsequent code updates will be automatically deployed through the established pipeline. 
+> **Important**
+> 
+>   You typically only need to run the deploy command once after your initial init command. Subsequent code updates will be automatically deployed through the established pipeline. 
+
 
 You should only need to run deploy again if:
 
