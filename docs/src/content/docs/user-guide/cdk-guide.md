@@ -11,6 +11,3 @@ CloudFront Hosting Toolkit offers two primary methods for integration with AWS C
 Both methods require some common setup steps, which are detailed in our [CDK Configuration Guide](cdk-configuration-guide.md).
 
 Choose the method that best fits your project's needs and level of customization required:
-
-- For quick integration with minimal customization, see our [CDK Construct Guide](cdk-construct.md).
-- For full control and extensive customization, see our [CDK Source Code Guide](cdk-source-code.md).
