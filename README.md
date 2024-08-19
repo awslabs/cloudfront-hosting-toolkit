@@ -51,11 +51,16 @@ npm install -g @aws/cloudfront-hosting-toolkit
    ```bash
    cloudfront-hosting-toolkit init
    ```
+   The animated GIF below demonstrates the initialization process
+   ![sample](img/init.gif "CloudFront Hosting Toolkit Init")   
 
 2. Deploy your website:
    ```bash
    cloudfront-hosting-toolkit deploy
    ```
+   The animated GIF below demonstrates the deployment process
+   ![sample](img/deploy.gif "CloudFront Hosting Toolkit Deploy")
+
 
 For more detailed instructions and advanced usage, please refer to our [CLI Guide](https://awslabs.github.io/cloudfront-hosting-toolkit/user-guide/cli-guide).
 
