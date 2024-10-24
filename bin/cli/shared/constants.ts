@@ -51,7 +51,8 @@ export const CLOUDFRONT_HOSTEDZONE_ID = "Z2FDTNDATAQYW2";
 export const GITHUB_REGEX =
   /^((https:\/\/github\.com\/([^/]+)\/([^/]+))|(git@github\.com:([^/]+)\/([^/]+)))\.git$/;
 export const DOMAIN_NAME_REGEX =
-  /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,6}$/i;
+  /^[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,}$/i;
+  
 
 export const ERROR_PREFIX = "\n\n[ERROR]";
 
