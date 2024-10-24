@@ -13,8 +13,7 @@
  import {
   Aws,
   aws_cloudfront as cloudfront,
-  aws_s3 as s3,
-  aws_cloudfront_origins as origins,
+  aws_s3 as s3
 } from "aws-cdk-lib";
 import * as path from "path";
 import * as fs from "fs";
