@@ -50,7 +50,7 @@ export class Hosting extends Construct {
   /**
    * The S3 Bucket used for hosting the content.
    */
-  public readonly hostingBucket: s3.Bucket;
+  public readonly hostingBucket: s3.IBucket;
 
   /**
    * The CloudFront Function used for URI manipulation.

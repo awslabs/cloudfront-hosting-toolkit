@@ -47,7 +47,9 @@ interface IConfigProps {
 
 
 export class HostingInfrastructure extends Construct {
+  
   public readonly hostingBucket: IBucket;
+  public readonly distribution: cloudfront.Distribution;
 
 
 
@@ -77,7 +79,7 @@ export class HostingInfrastructure extends Construct {
       },
     ]);
     */
-    const hostingBucket = new s3.Bucket(this, "HostingBucket", {
+    this.hostingBucket = new s3.Bucket(this, "HostingBucket", {
       versioned: false,
       ...(s3Logs ? { serverAccessLogsBucket: s3Logs } : {}),
       enforceSSL: true,
@@ -90,9 +92,8 @@ export class HostingInfrastructure extends Construct {
       }),
     });
 
-    this.hostingBucket = hostingBucket;
 
-    const s3origin = new origins.S3Origin(hostingBucket);
+    const s3origin = new origins.S3Origin(this.hostingBucket);
 
     const myResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
       this,
@@ -246,7 +247,7 @@ export class HostingInfrastructure extends Construct {
 
 
 
-    const distribution = new cloudfront.Distribution(this, "Distribution", {
+    this.distribution = new cloudfront.Distribution(this, "Distribution", {
       comment: "Static hosting - " + Aws.STACK_NAME,
       defaultRootObject: "index.html",
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
@@ -279,7 +280,7 @@ export class HostingInfrastructure extends Construct {
         : {}),
     });
 
-    NagSuppressions.addResourceSuppressions(distribution, [
+    NagSuppressions.addResourceSuppressions(this.distribution, [
       {
         id: "AwsSolutions-CFR4",
         reason:
@@ -290,7 +291,7 @@ export class HostingInfrastructure extends Construct {
     //OAC is not implemented in CDK so tweaking is required:eplace OAI par OAC
     //https://github.com/aws/aws-cdk/issues/21771
 
-    const cfnDistribution = distribution.node.defaultChild as CfnDistribution;
+    const cfnDistribution = this.distribution.node.defaultChild as CfnDistribution;
     cfnDistribution.addOverride(
       "Properties.DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity",
       ""
@@ -300,7 +301,7 @@ export class HostingInfrastructure extends Construct {
       oac.getAtt("Id")
     );
 
-    const comS3PolicyOverride = hostingBucket.node.findChild("Policy").node
+    const comS3PolicyOverride = this.hostingBucket.node.findChild("Policy").node
       .defaultChild as CfnBucketPolicy;
     const statement = comS3PolicyOverride.policyDocument.statements[1];
     if (statement["_principal"] && statement["_principal"].CanonicalUser) {
@@ -318,14 +319,14 @@ export class HostingInfrastructure extends Construct {
             service: "cloudfront",
             region: "",
             resource: "distribution",
-            resourceName: distribution.distributionId,
+            resourceName: this.distribution.distributionId,
             arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
           }),
         },
       }
     );
 
-    const s3OriginNode = distribution.node
+    const s3OriginNode = this.distribution.node
       .findAll()
       //.filter((child) => child.node.id === "S3Origin");
       .filter((child) => child.node.id === "S3Origin");
@@ -333,7 +334,7 @@ export class HostingInfrastructure extends Construct {
     //End of tweaking for OAC is not implemented in CDK so tweaking is required
 
     new CfnOutput(this, "DomainName", {
-      value: "https://" + distribution.domainName,
+      value: "https://" + this.distribution.domainName,
     });
 
     const stackName = calculateMainStackName(params.hostingConfiguration);
@@ -341,7 +342,7 @@ export class HostingInfrastructure extends Construct {
 
     new ssm.StringParameter(this, 'SSMConnectionRegion', {
       parameterName: '/' + stackName + '/' + SSM_DOMAIN_STR, 
-      stringValue: distribution.domainName,
+      stringValue: this.distribution.domainName,
     });
 
 
