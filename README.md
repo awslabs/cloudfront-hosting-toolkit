@@ -2,6 +2,14 @@
 
 CloudFront Hosting Toolkit is an open-source command-line tool designed to simplify the deployment and management of fast, secure frontend applications on AWS. It offers the convenience of a managed frontend hosting service while giving developers full control over their hosting and deployment infrastructure.
 
+<p align="center">
+  <a href="https://github.com/awslabs/cloudfront-hosting-toolkit"><img alt="GitHub Repo" src="https://img.shields.io/badge/GitHub-Repo-green.svg" /></a>
+  <a href="https://www.npmjs.com/package/@aws/cloudfront-hosting-toolkit"><img alt="npm" src="https://img.shields.io/npm/v/@aws/cloudfront-hosting-toolkit.svg?style=flat-square"></a>
+  <a href="https://awslabs.github.io/cloudfront-hosting-toolkit"><img alt="Documentation" src="https://img.shields.io/badge/docs-book-blue.svg?style=flat-square"></a>
+</p>
+
+
+
 ## What is CloudFront Hosting Toolkit?
 
 CloudFront Hosting Toolkit is a comprehensive solution that automates the process of setting up and managing a robust, scalable frontend hosting infrastructure on AWS. It leverages several AWS services, including CloudFront, S3, CodePipeline, and Lambda, to create a powerful hosting environment tailored for modern web applications.
@@ -102,7 +110,7 @@ CloudFront Hosting Toolkit offers flexibility in how it can be used:
 - **CDK Construct**: Leverage the CloudFront Hosting Toolkit as a ready-made L3 CDK construct for seamless integration into your AWS CDK projects.
 - **CDK Source Code**: Customize the CDK source code to tailor the infrastructure to your specific requirements.
 
-For more information on how to use CloudFront Hosting Toolkit, including advanced usage scenarios and in-depth customization options, please refer to our extensive documentation in the [Advanced section](https://awslabs.github.io/cloudfront-hosting-toolkit/advanced/overview).
+For more information on how to use CloudFront Hosting Toolkit, including advanced usage scenarios and in-depth customization options, please refer to our extensive documentation in the [Advanced section](https://awslabs.github.io/cloudfront-hosting-toolkit/advanced/configuration/).
 
 ## Documentation
 
@@ -116,6 +124,21 @@ For more information on how to use CloudFront Hosting Toolkit, including advance
 ## Roadmap
 
 For information about upcoming features and improvements, please see our [Roadmap](docs/roadmap.md).
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](https://raw.githubusercontent.com/awslabs/cloudfront-hosting-toolkit/main/CONTRIBUTING.md) for more details.
+
+# Author
+
+- [Corneliu Croitoru](https://www.linkedin.com/in/corneliucroitoru/)
+
+# Contributors
+[![contributors](https://contrib.rocks/image?repo=awslabs/cloudfront-hosting-toolkit&max=2000)](https://github.com/awslabs/cloudfront-hosting-toolkit/graphs/contributors)
+
+
+
+
 
 ## License
 
