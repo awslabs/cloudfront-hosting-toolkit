@@ -93,7 +93,7 @@ export class HostingInfrastructure extends Construct {
     });
 
 
-    const s3origin = new origins.S3Origin(this.hostingBucket);
+    const s3origin = origins.S3BucketOrigin.withOriginAccessControl(this.hostingBucket);
 
     const myResponseHeadersPolicy = new cloudfront.ResponseHeadersPolicy(
       this,
@@ -288,50 +288,7 @@ export class HostingInfrastructure extends Construct {
       },
     ]);
 
-    //OAC is not implemented in CDK so tweaking is required:eplace OAI par OAC
-    //https://github.com/aws/aws-cdk/issues/21771
 
-    const cfnDistribution = this.distribution.node.defaultChild as CfnDistribution;
-    cfnDistribution.addOverride(
-      "Properties.DistributionConfig.Origins.0.S3OriginConfig.OriginAccessIdentity",
-      ""
-    );
-    cfnDistribution.addPropertyOverride(
-      "DistributionConfig.Origins.0.OriginAccessControlId",
-      oac.getAtt("Id")
-    );
-
-    const comS3PolicyOverride = this.hostingBucket.node.findChild("Policy").node
-      .defaultChild as CfnBucketPolicy;
-    const statement = comS3PolicyOverride.policyDocument.statements[1];
-    if (statement["_principal"] && statement["_principal"].CanonicalUser) {
-      delete statement["_principal"].CanonicalUser;
-    }
-    comS3PolicyOverride.addOverride(
-      "Properties.PolicyDocument.Statement.1.Principal",
-      { Service: "cloudfront.amazonaws.com" }
-    );
-    comS3PolicyOverride.addOverride(
-      "Properties.PolicyDocument.Statement.1.Condition",
-      {
-        StringEquals: {
-          "AWS:SourceArn": Stack.of(this).formatArn({
-            service: "cloudfront",
-            region: "",
-            resource: "distribution",
-            resourceName: this.distribution.distributionId,
-            arnFormat: ArnFormat.SLASH_RESOURCE_NAME,
-          }),
-        },
-      }
-    );
-
-    const s3OriginNode = this.distribution.node
-      .findAll()
-      //.filter((child) => child.node.id === "S3Origin");
-      .filter((child) => child.node.id === "S3Origin");
-    s3OriginNode[0].node.tryRemoveChild("Resource");
-    //End of tweaking for OAC is not implemented in CDK so tweaking is required
 
     new CfnOutput(this, "DomainName", {
       value: "https://" + this.distribution.domainName,
