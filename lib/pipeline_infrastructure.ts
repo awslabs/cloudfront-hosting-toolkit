@@ -126,8 +126,11 @@ export class PipelineInfrastructure extends Construct {
 
       const { repoOwner, repoName } = parsedUrl;
       //the pipeline is triggered from code repository
-      pipelineName = repoOwner + "@" + repoName;
+      pipelineName = `${repoOwner}-${repoName}-${params.hostingConfiguration.branchName}`;
+      
       pipelineName = cleanPipelineNameStr(pipelineName);
+
+
       buildName = "Build-And-Copy-to-S3-" + repoName;
       buildName = cleanBuildNameStr(buildName);
       const sourceActionName = cleanActionNameStr("GitHub-Source-" + repoName);
