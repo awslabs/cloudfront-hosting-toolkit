@@ -14,7 +14,7 @@
   limitations under the License.
 */
 const { S3 } = require("@aws-sdk/client-s3");
-const s3 = new S3();
+const s3 = new S3({customUserAgent: "cht"});
 
 const bucketName = process.env.BUCKET_NAME; // Use the environment variable
 
