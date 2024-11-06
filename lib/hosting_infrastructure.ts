@@ -99,8 +99,8 @@ export class HostingInfrastructure extends Construct {
       this,
       "ResponseHeadersPolicy",
       {
-        responseHeadersPolicyName: "ResponseHeadersPolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
-        comment: "ResponseHeadersPolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
+        responseHeadersPolicyName: "ResponseHeadersPolicy" + Stack.of(this).stackName + "-" + Stack.of(this).region,
+        comment: "ResponseHeadersPolicy" + Stack.of(this).stackName + "-" + Stack.of(this).region,
         securityHeadersBehavior: {
           contentTypeOptions: { override: true },
           frameOptions: {
@@ -128,8 +128,8 @@ export class HostingInfrastructure extends Construct {
       this,
       "DefaultCachePolicy",
       {
-        cachePolicyName: "CachePolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
-        comment: "Default policy - " + Aws.STACK_NAME + "-" + Aws.REGION,
+        cachePolicyName: "CachePolicy" + Stack.of(this).stackName + "-" + Stack.of(this).region,
+        comment: "Default policy - " + Stack.of(this).stackName + "-" + Stack.of(this).region,
         defaultTtl: Duration.days(365),
         minTtl: Duration.days(365),
         maxTtl: Duration.days(365),
@@ -142,8 +142,8 @@ export class HostingInfrastructure extends Construct {
     );
 
     const imgCachePolicy = new cloudfront.CachePolicy(this, "ImagesCachePolicy", {
-      cachePolicyName: "ImagesCachePolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
-      comment: "Images cache policy - " + Aws.STACK_NAME + "-" + Aws.REGION,
+      cachePolicyName: "ImagesCachePolicy" + Stack.of(this).stackName + "-" + Stack.of(this).region,
+      comment: "Images cache policy - " + Stack.of(this).stackName + "-" + Stack.of(this).region,
       defaultTtl: Duration.days(365),
       minTtl: Duration.days(365),
       maxTtl: Duration.days(365),
@@ -153,8 +153,8 @@ export class HostingInfrastructure extends Construct {
     });
 
     const staticAssetsCachePolicy = new cloudfront.CachePolicy(this, "staticAssetsCachePolicy", {
-      cachePolicyName: "StaticAssetsCachePolicy" + Aws.STACK_NAME + "-" + Aws.REGION,
-      comment: "Static assets cache policy - " + Aws.STACK_NAME + "-" + Aws.REGION,
+      cachePolicyName: "StaticAssetsCachePolicy" + Stack.of(this).stackName + "-" + Stack.of(this).region,
+      comment: "Static assets cache policy - " + Stack.of(this).stackName + "-" + Stack.of(this).region,
       defaultTtl: Duration.days(365),
       minTtl: Duration.days(365),
       maxTtl: Duration.days(365),
@@ -206,14 +206,6 @@ export class HostingInfrastructure extends Construct {
       ],
     };
 
-    const oac = new cloudfront.CfnOriginAccessControl(this, "OAC", {
-      originAccessControlConfig: {
-        name: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65),
-        originAccessControlOriginType: "s3",
-        signingBehavior: "always",
-        signingProtocol: "sigv4",
-      },
-    });
 
     let cfLogs;
     /*
@@ -248,7 +240,7 @@ export class HostingInfrastructure extends Construct {
 
 
     this.distribution = new cloudfront.Distribution(this, "Distribution", {
-      comment: "Static hosting - " + Aws.STACK_NAME,
+      comment: "Static hosting - " + Stack.of(this).stackName,
       defaultRootObject: "index.html",
       httpVersion: cloudfront.HttpVersion.HTTP2_AND_3,
       ...(cfLogs ? { enableLogging: true } : {}),
