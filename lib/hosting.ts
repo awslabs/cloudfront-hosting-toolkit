@@ -13,7 +13,8 @@
  import {
   Aws,
   aws_cloudfront as cloudfront,
-  aws_s3 as s3
+  aws_s3 as s3,
+  Stack
 } from "aws-cdk-lib";
 import * as path from "path";
 import * as fs from "fs";
@@ -85,9 +86,12 @@ export class Hosting extends Construct {
   constructor(scope: Construct, id: string, params: IParamProps) {
     super(scope, id);
 
+    const stackName = Stack.of(this).stackName;
+    const region = Stack.of(this).region;
+
     // Create URI Store
     this.uriStore = new cloudfront.KeyValueStore(this, 'UriStore', {
-      keyValueStoreName: truncateString(Aws.STACK_NAME + "-" + Aws.REGION, 65)
+      keyValueStoreName: truncateString(stackName + "-" + region, 64)
     });
 
     // Setup CloudFront Function

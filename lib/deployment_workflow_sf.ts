@@ -247,7 +247,7 @@ export class DeploymentWorkflowStepFunction extends Construct {
 
     const sfnLog = new LogGroup(this, "sfnLog", {
       logGroupName:
-      "/aws/vendedlogs/states/" + Aws.STACK_NAME,
+      "/aws/vendedlogs/states/" + Stack.of(this).stackName,
       removalPolicy: RemovalPolicy.DESTROY,
       retention: RetentionDays.ONE_WEEK,
     });
