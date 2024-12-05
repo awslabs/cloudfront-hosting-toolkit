@@ -10,8 +10,6 @@ CloudFront Hosting Toolkit simplifies the process of deploying and managing fron
 
 ## Re:Invent 2024 lightning talk
 
-Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in action:
-
 <p align="center">
   <a href="https://www.youtube.com/watch?v=pmWhspx4ppw">
     <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit lightning talk" width="600"/>
@@ -20,7 +18,6 @@ Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in
 
 Learn how to leverage CloudFront Hosting Toolkit for deploying secure and fast frontends using Git-based workflows while maintaining full control over your AWS resources.
 
-Let's explore each step in detail:
 
 ## Initialization
 

@@ -39,8 +39,6 @@ For a detailed explanation of the architecture and workflow, please refer to our
 
 ## Re:Invent 2024 lightning talk
 
-Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in action:
-
 <p align="center">
   <a href="https://www.youtube.com/watch?v=pmWhspx4ppw">
     <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit lightning talk" width="600"/>
