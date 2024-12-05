@@ -8,6 +8,18 @@ CloudFront Hosting Toolkit simplifies the process of deploying and managing fron
 2. **Deployment**: Deploy your frontend application infrastructure to AWS.
 3. **Updates**: Automatic updates and content delivery after deployment.
 
+## Demo Video
+
+Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in action:
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=pmWhspx4ppw">
+    <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit Demo" width="600"/>
+  </a>
+</p>
+
+Learn how to leverage CloudFront Hosting Toolkit for deploying secure and fast frontends using Git-based workflows while maintaining full control over your AWS resources.
+
 Let's explore each step in detail:
 
 ## Initialization

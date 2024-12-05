@@ -37,9 +37,25 @@ For a detailed explanation of the architecture and workflow, please refer to our
 - **Cost-Effective**: Utilize AWS services efficiently without unnecessary overhead.
 - **Full Control**: Retain the ability to customize and extend your infrastructure.
 
+## Re:Invent 2024 lightning talk
+
+Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in action:
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=pmWhspx4ppw">
+    <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit Demo" width="600"/>
+  </a>
+</p>
+
+Learn how to leverage CloudFront Hosting Toolkit for deploying secure and fast frontends using Git-based workflows while maintaining full control over your AWS resources.
+
+
+
 ## Getting Started
 
 Check out our [documentation](https://awslabs.github.io/cloudfront-hosting-toolkit/) for comprehensive guides on setting up and using the Cloudfront Hosting Toolkit!
+
+
 
 ### Requirements
 
