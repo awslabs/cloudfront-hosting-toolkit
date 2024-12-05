@@ -139,7 +139,7 @@ For more information on how to use CloudFront Hosting Toolkit, including advance
 
 ## Roadmap
 
-For information about upcoming features and improvements, please see our [Roadmap](docs/roadmap.md).
+For information about upcoming features and improvements, please see our [Roadmap](roadmap.md).
 
 ## 🤝 Contributing
 
