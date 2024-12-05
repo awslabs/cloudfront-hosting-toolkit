@@ -43,7 +43,7 @@ Watch our AWS re:Invent 2024 lightning talk to see CloudFront Hosting Toolkit in
 
 <p align="center">
   <a href="https://www.youtube.com/watch?v=pmWhspx4ppw">
-    <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit Demo" width="600"/>
+    <img src="https://img.youtube.com/vi/pmWhspx4ppw/maxresdefault.jpg" alt="AWS re:Invent 2024 - CloudFront Hosting Toolkit lightning talk" width="600"/>
   </a>
 </p>
 
